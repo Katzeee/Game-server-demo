@@ -5,8 +5,12 @@
 int main() {
     sockaddr_in sock_addr;
     int socket_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (socket_fd < 0) {
+        std::cout << "error" << std::endl;
+        return -1;
+    }
     memset(&sock_addr, 0, sizeof(sockaddr_in));
-    ::inet_pton(AF_INET, "127.0.0.1", &sock_addr.sin_addr.s_addr);
+    sock_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
     sock_addr.sin_family = AF_INET;
     sock_addr.sin_port = htons(2233);
 
@@ -28,5 +32,6 @@ int main() {
     if (size > 0) {
         std::cout << buf << std::endl;
     }
+    ::shutdown(socket_fd, SHUT_RDWR);
     return 0;
 }
