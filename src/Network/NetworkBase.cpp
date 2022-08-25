@@ -41,13 +41,17 @@ bool NetworkBase::Select() {
         }
         if (FD_ISSET(it->first, &read_fds_)) {
             if (!it->second->Receive()) {
-                // TODO: Do something when fail
+                it->second->Dispose();
+                delete it->second;
+                connects_.erase(it->first);
                 continue;
             }
         }
         if (FD_ISSET(it->first, &write_fds_)) {
             if (!it->second->Send()) {
-                // TODO: Do something when fail
+                it->second->Dispose();
+                delete it->second;
+                connects_.erase(it->first);
                 continue;
             }
         }

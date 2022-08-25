@@ -7,6 +7,7 @@
 #include <map>
 
 #include "../Disposal/IDisposable.h"
+#include "ConnetObj.h"
 
 namespace xac {
 
@@ -15,14 +16,9 @@ public:
     NetworkBase();
     ~NetworkBase();
     bool Select();
-private:
+protected:
     int master_socket_fd_{-1}; // listen fd or connect fd
-    class ConnectObj : public IDisposable {
-    public:
-        bool HasSendData();
-        bool Receive();
-        bool Send();
-    };
+    
     std::map<int, ConnectObj*> connects_;
     fd_set read_fds_, write_fds_, except_fds_;
 };
