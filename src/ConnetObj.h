@@ -1,5 +1,5 @@
 #pragma once
-#include "../Disposal/IDisposable.h"
+#include "IDisposable.h"
 
 namespace xac {
 
