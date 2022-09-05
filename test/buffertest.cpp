@@ -5,16 +5,16 @@
 using namespace xac;
 
 int main() {
-	NormalBuffer* buffer = new NormalBuffer();
+	Buffer* buffer = new NormalBuffer(10);
 	std::string test = "test";
-	buffer->MemcopyToBuffer(const_cast<char*>(test.c_str()), test.length() + 1);
 	char* cbuffer = (char*)malloc(10);
     memset(cbuffer, 0, 10);
-	buffer->MemcopyFromBuffer(cbuffer, 3);
-	std::cout << cbuffer << std::endl;
-    buffer->ReAlloc(20);
-    memset(cbuffer, 0, 10);
-	buffer->MemcopyFromBuffer(cbuffer, 3);
-	std::cout << cbuffer << std::endl;
+    for (auto i = 0; i < 20; i++) {
+        buffer->MemcopyToBuffer(const_cast<char*>(test.c_str()), test.length());
+        buffer->FillData(4);
+        buffer->MemcopyFromBuffer(cbuffer, 4);
+        buffer->RemoveData(4);
+        std::cout << cbuffer << std::endl;
+    }
 	return 0;
 }

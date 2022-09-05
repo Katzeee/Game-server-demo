@@ -6,8 +6,8 @@
 #include <sys/epoll.h>
 #include <map>
 
-#include "../Disposal/IDisposable.h"
-#include "ConnetObj.h"
+#include "IDisposable.h"
+#include "ConnectObj.h"
 
 namespace xac {
 

@@ -2,8 +2,12 @@
 #include <iostream>
 
 namespace xac {
-class ConnectObj
+class ConnectObj {
+
+public:
 	ConnectObj();
 	bool Send();
 	
+};
+
 }
