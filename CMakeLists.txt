@@ -14,9 +14,14 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 
 add_executable(server test/server.cpp)
+
 add_executable(client test/client.cpp)
 add_dependencies(client libserver)
 target_link_libraries(client libserver)
+
+add_executable(buffertest test/buffertest.cpp)
+add_dependencies(buffertest libserver)
+target_link_libraries(buffertest libserver)
 
 add_executable(network test/networkclasstest.cpp)
 add_dependencies(network libserver)

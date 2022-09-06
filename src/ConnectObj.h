@@ -2,19 +2,21 @@
 #include <iostream>
 #include "IDisposable.h"
 #include "Buffer.h"
+#include "Packet.h"
 
 namespace xac {
 
+class ReadBuffer;
 class WriteBuffer : public RingBuffer {
 public:
-    void AddPacket(char* src) {
-
-    }
+    void AddPacket(Packet* packet);
 };
 
-class ReadBuffer : public NormalBuffer {
-
+class ReadBuffer : public RingBuffer {
+public:
+    Packet* GetPacket();
 };
+
 
 class ConnectObj : public IDisposable {
 
@@ -26,6 +28,8 @@ public:
     bool HasRecvData();
     bool Receive();
     void Dispose() override;
+    void SendPacket(Packet* packet);
+    Packet* GetPacket();
 
 protected:
     const int socket_fd_;

@@ -26,7 +26,7 @@ void Buffer::ReAlloc(size_t size = 0) {
 }
 
 bool Buffer::MemcopyToBuffer(char* src, size_t size) {
-    size_t empty_size = capacity_ - size_;
+    size_t empty_size = capacity_ - end_;
     if (empty_size <= size) {
         std::cout << "No enough position" << std::endl;
         return false;
@@ -37,8 +37,7 @@ bool Buffer::MemcopyToBuffer(char* src, size_t size) {
 
 bool Buffer::MemcopyFromBuffer(char* des, size_t size) {
     // size_ is fake to indicate the used part of a buffer having removed data. It is correct to calculate the emptysieze but cannot reflect the real size
-    auto real_size = end_ - start_;
-    if (real_size < size) {
+    if (size_ < size) {
         std::cout << "Don't have enough data" << std::endl;
         return false;
     }
@@ -59,11 +58,11 @@ size_t Buffer::GetCapacity() {
 }
 
 size_t Buffer::GetEmptySize() {
-    return capacity_ - size_;
+    return capacity_ - end_;
 }
 
 bool Buffer::FillData(size_t size) {
-    if (size + size_ >= capacity_) {
+    if (size + end_ >= capacity_) {
         return false;
     }
     size_ += size;
@@ -72,10 +71,10 @@ bool Buffer::FillData(size_t size) {
 }
 
 bool Buffer::RemoveData(size_t size) {
-    auto real_size = end_ - start_;
-    if (real_size < size) {
+    if (size_ < size) {
         return false;
     }
+    size_ -= size;
     start_ += size;
     return true;
 }

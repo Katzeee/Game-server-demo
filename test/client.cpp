@@ -2,6 +2,8 @@
 #include <arpa/inet.h>
 #include <memory.h>
 #include <string>
+#include "../src/Packet.h"
+using namespace xac;
 
 int main() {
     int socket_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -21,10 +23,14 @@ int main() {
     std::string buf = "hello";
     char* buffer = new char[10];
     memset(buffer, 0, 10);
-    ::send(socket_fd, buf.c_str(), buf.length(), 0);
 
-    ::recv(socket_fd, buffer, 10, 0); 
-    std::cout << buffer << std::endl;
+    PacketHead head{5, 1};
+    ::send(socket_fd, reinterpret_cast<char*>(&head), sizeof(PacketHead), 0);
+    ::send(socket_fd, buf.c_str(), buf.length(), 0);
+    
+
+    // ::recv(socket_fd, buffer, 10, 0); 
+    // std::cout << buffer << std::endl;
     ::shutdown(socket_fd, SHUT_RDWR);
     return 0;
 }

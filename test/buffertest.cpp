@@ -5,7 +5,7 @@
 using namespace xac;
 
 int main() {
-	Buffer* buffer = new RingBuffer(10);
+	Buffer* buffer = new NormalBuffer(10);
 	std::string test = "test";
 	char* cbuffer = (char*)malloc(10);
     memset(cbuffer, 0, 10);

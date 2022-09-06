@@ -2,8 +2,11 @@
 #include <fcntl.h>
 #include <arpa/inet.h>
 #include "NetworkListener.h"
+#include "ConnectObj.h"
+#include "Packet.h"
 
 namespace xac {
+
 bool NetworkListener::Listen(std::string ip_addr, uint16_t port) {
     master_socket_fd_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (master_socket_fd_ < 0) {
@@ -55,6 +58,19 @@ void NetworkListener::Update() {
             Accept();
         }
         Select();
+        for (auto it : connects_) {
+            if (it.second->HasRecvData()) {
+                Packet* packet = it.second->GetPacket();
+                if (!packet) {
+                    continue;
+                }
+                char* buffer = (char*)malloc(packet->GetSize());
+                packet->MemcopyFromBuffer(buffer, packet->GetSize());
+                std::cout << buffer << std::endl;
+                delete packet;
+                free(buffer);
+            }
+        }
     }
 }
-}
+} // end namespace xac
