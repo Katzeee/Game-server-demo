@@ -15,12 +15,12 @@ Buffer::Buffer(size_t size) : size_(0), capacity_(size) {
 }
 
 void Buffer::ReAlloc(size_t size = 0) {
-    if (size == 0 || size < capacity_) {
-        size = 2 * capacity_;
+    if (size == 0) {
+        size = capacity_;
     }
-    char* new_buffer = (char*)malloc(size);
+    char* new_buffer = (char*)malloc(capacity_ + size);
     memcpy(new_buffer, buffer, capacity_);
-    capacity_ = size;
+    capacity_ += size;
     free(buffer);
     buffer = new_buffer;
 }
@@ -56,6 +56,10 @@ size_t Buffer::GetSize() {
 
 size_t Buffer::GetCapacity() {
     return capacity_;
+}
+
+size_t Buffer::GetEmptySize() {
+    return capacity_ - size_;
 }
 
 bool Buffer::FillData(size_t size) {

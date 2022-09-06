@@ -13,7 +13,7 @@ namespace xac {
 
 class NetworkBase {
 public:
-    NetworkBase();
+    NetworkBase() {}
     ~NetworkBase();
     bool Select();
 protected:

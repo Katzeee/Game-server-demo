@@ -34,6 +34,7 @@ bool NetworkBase::Select() {
     }
     for (auto it = connects_.begin(); it != connects_.end(); it++) {
         if (FD_ISSET(it->first, &except_fds_)) { // if fd has exception, close the connection
+            std::cout << "except " << it->first << std::endl;
             it->second->Dispose();
             delete it->second;
             connects_.erase(it->first);

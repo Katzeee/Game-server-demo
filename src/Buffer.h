@@ -16,6 +16,7 @@ public:
 	virtual void ReAlloc(size_t size);
 	size_t GetSize();
 	size_t GetCapacity();
+    size_t GetEmptySize();
 	virtual bool MemcopyFromBuffer(char* des, size_t size);
 	virtual bool MemcopyToBuffer(char* src, size_t size);
     virtual bool FillData(size_t size);

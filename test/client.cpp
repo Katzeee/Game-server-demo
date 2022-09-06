@@ -19,7 +19,12 @@ int main() {
         return -1;
     }
     std::string buf = "hello";
+    char* buffer = new char[10];
+    memset(buffer, 0, 10);
     ::send(socket_fd, buf.c_str(), buf.length(), 0);
+
+    ::recv(socket_fd, buffer, 10, 0); 
+    std::cout << buffer << std::endl;
     ::shutdown(socket_fd, SHUT_RDWR);
     return 0;
 }
