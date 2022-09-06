@@ -25,18 +25,23 @@ void Buffer::ReAlloc(size_t size = 0) {
     buffer = new_buffer;
 }
 
-// TODO: overflow check
 bool Buffer::MemcopyToBuffer(char* src, size_t size) {
     size_t empty_size = capacity_ - size_;
     if (empty_size <= size) {
+        std::cout << "No enough position" << std::endl;
         return false;
     }
 	memcpy(buffer + end_, src, size);
     return true;
 }
 
-// TODO: overflow check
 bool Buffer::MemcopyFromBuffer(char* des, size_t size) {
+    // size_ is fake to indicate the used part of a buffer having removed data. It is correct to calculate the emptysieze but cannot reflect the real size
+    auto real_size = end_ - start_;
+    if (real_size < size) {
+        std::cout << "Don't have enough data" << std::endl;
+        return false;
+    }
 	memcpy(des, buffer + start_, size);
     return true;
 }
@@ -53,13 +58,22 @@ size_t Buffer::GetCapacity() {
     return capacity_;
 }
 
-void Buffer::FillData(size_t size) {
+bool Buffer::FillData(size_t size) {
+    if (size + size_ >= capacity_) {
+        return false;
+    }
     size_ += size;
     end_ += size;
+    return true;
 }
 
-void Buffer::RemoveData(size_t size) {
+bool Buffer::RemoveData(size_t size) {
+    auto real_size = end_ - start_;
+    if (real_size < size) {
+        return false;
+    }
     start_ += size;
+    return true;
 }
 
 bool RingBuffer::MemcopyFromBuffer(char* des, size_t size) {
@@ -96,13 +110,21 @@ bool RingBuffer::MemcopyToBuffer(char* src, size_t size) {
     return true;
 }
 
-void RingBuffer::RemoveData(size_t size) {
+bool RingBuffer::RemoveData(size_t size) {
+    if (size_ < size) {
+        return false;
+    }
     start_ = (start_ + size) % capacity_;
     size_ -= size;
+    return true;
 }
 
-void RingBuffer::FillData(size_t size) {
+bool RingBuffer::FillData(size_t size) {
+    if (size + size_ >= capacity_) {
+        return false;
+    }
     end_ = (end_ + size) % capacity_;
     size_ += size;
+    return true;
 }
 }

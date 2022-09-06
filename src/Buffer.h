@@ -18,8 +18,8 @@ public:
 	size_t GetCapacity();
 	virtual bool MemcopyFromBuffer(char* des, size_t size);
 	virtual bool MemcopyToBuffer(char* src, size_t size);
-    virtual void FillData(size_t size);
-    virtual void RemoveData(size_t size);
+    virtual bool FillData(size_t size);
+    virtual bool RemoveData(size_t size);
 	virtual ~Buffer();
 };
 
@@ -29,8 +29,8 @@ public:
     RingBuffer(size_t size) : Buffer(size) {}
     bool MemcopyFromBuffer(char* des, size_t size) override;
     bool MemcopyToBuffer(char* src, size_t size) override;
-    void RemoveData(size_t size) override;
-    void FillData(size_t size) override;
+    bool RemoveData(size_t size) override;
+    bool FillData(size_t size) override;
 };
 
 class NormalBuffer : public Buffer {

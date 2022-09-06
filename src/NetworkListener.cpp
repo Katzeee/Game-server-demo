@@ -24,4 +24,12 @@ bool NetworkListener::Listen(std::string ip_addr, uint16_t port) {
     }
     return true;
 }
+
+int NetworkListener::Accept() {
+    sockaddr sock_addr;
+    memset(&sock_addr, 0, sizeof(sockaddr));
+    socklen_t sock_addr_len = sizeof(sockaddr);
+    auto res = ::accept(master_socket_fd_, &sock_addr, &sock_addr_len);
+    return res;
+}
 }

@@ -30,7 +30,7 @@ bool NetworkBase::Select() {
     timeout.tv_sec = 0;
     timeout.tv_usec = 50 * 1000;
     if (::select(fd_max + 1, &read_fds_, &write_fds_, & except_fds_, &timeout) <= 0) {
-        return true;
+        return false;
     }
     for (auto it = connects_.begin(); it != connects_.end(); it++) {
         if (FD_ISSET(it->first, &except_fds_)) { // if fd has exception, close the connection

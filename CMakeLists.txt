@@ -6,7 +6,8 @@ endif()
 set(CMAKE_CXX_STANDARD_REQUIRED 14) 
 set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -rdynamic -Wall -Wno-deprecated -Werror -Wno-unused-function")
 
-aux_source_directory(. LIB_SRC)
+aux_source_directory(src LIB_SRC)
+add_library(libserver SHARED ${LIB_SRC})
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
@@ -14,3 +15,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 add_executable(server test/server.cpp)
 add_executable(client test/client.cpp)
+
+add_executable(network test/networkclasstest.cpp)
+add_dependencies(network libserver)
+target_link_libraries(network libserver)
