@@ -1,14 +1,18 @@
 #pragma once
+#include "NetworkListener.h"
 #include "NetworkBase.h"
 
 namespace xac {
 
-class NetworkConnecter : public NetworkBase {
+class Server : public NetworkListener {
 public:
-    NetworkConnecter() : is_running_(true) {}
-    bool Connect(std::string ip_addr, uint16_t port);
+    Server();
+    ~Server() {}
     void Update() override;
+    void DataHandler();
 private:
     bool is_running_;
 };
+
+
 } // end namespace xac

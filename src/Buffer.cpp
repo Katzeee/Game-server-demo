@@ -4,9 +4,10 @@
 namespace xac {
 Buffer::Buffer() {
 	size_ = 0;
-	capacity_ = 10 * 1024;
-	buffer = (char*)malloc(capacity_);	
-    memset(buffer, 0, capacity_);
+	capacity_ = 1 * 128;
+	//buffer = (char*)::malloc(capacity_);	
+    buffer = new char[capacity_];
+    // memset(buffer, 0, capacity_);
 }
 
 Buffer::Buffer(size_t size) : size_(0), capacity_(size) {
@@ -15,6 +16,9 @@ Buffer::Buffer(size_t size) : size_(0), capacity_(size) {
 }
 
 void Buffer::ReAlloc(size_t size = 0) {
+    if (GetEmptySize() > size) {
+        return;
+    }
     if (size == 0) {
         size = capacity_;
     }
@@ -77,6 +81,14 @@ bool Buffer::RemoveData(size_t size) {
     size_ -= size;
     start_ += size;
     return true;
+}
+
+size_t RingBuffer::GetEmptySize() {
+    if (end_ >= start_) {
+        return capacity_ - end_ + start_;
+    } else {
+        return start_ - end_;
+    }
 }
 
 bool RingBuffer::MemcopyFromBuffer(char* des, size_t size) {

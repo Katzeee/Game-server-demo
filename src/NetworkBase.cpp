@@ -75,4 +75,11 @@ void NetworkBase::SetNonBlock(int socket) {
     int flags = fcntl(socket, F_GETFL, 0);
     fcntl(socket, F_SETFL, flags | O_NONBLOCK);
 }
+
+NetworkBase::~NetworkBase() {
+    for (auto it : connects_) {
+        it.second->Dispose();
+        delete it.second;
+    }
+}
 } // end namespace xac

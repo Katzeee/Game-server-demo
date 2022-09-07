@@ -14,7 +14,7 @@ namespace xac {
 class NetworkBase {
 public:
     NetworkBase() {}
-    ~NetworkBase();
+    virtual ~NetworkBase();
     bool Select();
     virtual void Update() = 0;
 protected:

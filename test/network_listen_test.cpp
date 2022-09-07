@@ -1,12 +1,17 @@
 #include <iostream>
+#include "../src/Server.h"
 #include "../src/NetworkListener.h"
 #include "../src/Buffer.h"
 #include "../src/ConnectObj.h"
 using namespace xac;
 
 int main() {
-    auto network_listener = new NetworkListener();
-    network_listener->Listen("127.0.0.1", 2233);
-    network_listener->Update();
+    auto server = new Server();
+    server->Listen("127.0.0.1", 2233);
+    server->Update();
+    // auto i = 100;
+    // while(i--) {
+    //     new Packet(100);
+    // }
     return 0;
 }

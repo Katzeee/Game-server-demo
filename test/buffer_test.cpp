@@ -7,7 +7,7 @@ using namespace xac;
 int main() {
 	Buffer* buffer = new NormalBuffer(10);
 	std::string test = "test";
-	char* cbuffer = (char*)malloc(10);
+	char* cbuffer = (char*)::malloc(10);
     memset(cbuffer, 0, 10);
     for (auto i = 0; i < 20; i++) {
         buffer->MemcopyToBuffer(const_cast<char*>(test.c_str()), test.length());

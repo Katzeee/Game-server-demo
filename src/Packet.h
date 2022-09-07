@@ -15,11 +15,11 @@ struct PacketHead {
 
 class Packet : public NormalBuffer {
 public:
-    Packet() = delete;
-    Packet(uint16_t msg_id) : msg_id_(msg_id) {}
+    Packet() : msg_id_(0) {}
+    Packet(uint16_t msg_id) : msg_id_(msg_id) { std:: cout << "new packet" << std::endl; }
     uint16_t GetMsgId() { return msg_id_; }
     void SetMessageData(char* src, size_t size);
-    ~Packet() {}
+    ~Packet() { std::cout << "free packet" << std::endl; }
 protected:
     uint16_t msg_id_;
 };

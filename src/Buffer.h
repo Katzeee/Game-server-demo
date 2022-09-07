@@ -2,9 +2,19 @@
 #include <iostream>
 
 namespace xac {
+
+static void* malloc(size_t size) {
+    std::cout << "malloc " << size << std::endl;
+    return ::malloc(size);
+}
+
+static void free(void* ptr) {
+    std::cout << "free " << std::endl;
+    ::free(ptr);
+}
 class Buffer {
 protected:
-	char* buffer;
+	char* buffer = nullptr;
 	size_t start_ = 0; // buffer start position
 	size_t end_ = 0; // buffer end position
 	size_t size_ = 0; // buffer size
@@ -16,7 +26,7 @@ public:
 	virtual void ReAlloc(size_t size);
 	size_t GetSize();
 	size_t GetCapacity();
-    size_t GetEmptySize();
+    virtual size_t GetEmptySize();
 	virtual bool MemcopyFromBuffer(char* des, size_t size);
 	virtual bool MemcopyToBuffer(char* src, size_t size);
     virtual bool FillData(size_t size);
@@ -32,11 +42,12 @@ public:
     bool MemcopyToBuffer(char* src, size_t size) override;
     bool RemoveData(size_t size) override;
     bool FillData(size_t size) override;
+    size_t GetEmptySize() override;
 };
 
 class NormalBuffer : public Buffer {
 public:
-    NormalBuffer() : Buffer() {}
+    NormalBuffer() : Buffer() { std::cout << "Normal buffer" << std::endl; }
     NormalBuffer(size_t size) : Buffer(size) {}
     // ~NormalBuffer() { Buffer::~Buffer(); }
     // void MemcopyFromBuffer(char* des, size_t size) { Buffer::MemcopyFromBuffer(des, size); }

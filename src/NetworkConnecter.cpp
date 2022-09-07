@@ -19,18 +19,25 @@ bool NetworkConnecter::Connect(std::string ip_addr, uint16_t port) {
         std::cout << "connect error" << std::endl;
         return false;
     }
+    SetNonBlock(master_socket_fd_);
     ConnectObj* connect_obj = new ConnectObj(master_socket_fd_);
     connects_.insert(std::pair(master_socket_fd_, connect_obj));
 
-    Packet* packet = new Packet(2);
-    std::string data("connect");
-    packet->SetMessageData(const_cast<char*>(data.c_str()), data.length());
+    auto packet = new Packet(3);
+    std::string buffer("sssssssssssssssssssssssssssssss");
+    packet->SetMessageData(const_cast<char*>(buffer.c_str()), buffer.length());
+    
+    std::cout << "send msgid: " << packet->GetMsgId() << " data: " << buffer << std::endl;
     connect_obj->SendPacket(packet);
     return true;
 }
 
 void NetworkConnecter::Update() {
-    Select();
+    auto i = 2;
+    while (i--) {
+        Select();
+        
+    }
 }
 
-}
+} // end namespace xac

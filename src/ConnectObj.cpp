@@ -43,7 +43,7 @@ bool ConnectObj::HasRecvData() {
     return false;
 }
 bool ConnectObj::Receive() {
-    char* buffer = (char*)malloc(sizeof(PacketHead));
+    char* buffer = (char*)::malloc(sizeof(PacketHead));
     ssize_t data_size = 0;
     while(true) {
         if (read_buffer_->GetEmptySize() <= sizeof(PacketHead)) {
@@ -61,7 +61,7 @@ bool ConnectObj::Receive() {
             break;
         }
     }
-    free(buffer);
+    ::free(buffer);
     return true;
 }
 
@@ -83,6 +83,7 @@ void ConnectObj::SendPacket(Packet* packet) {
 }
 
 Packet* ReadBuffer::GetPacket() {
+    new char[100];
     if (size_ < sizeof(uint16_t)) { // check whether enough length for data size
         return nullptr;
     }
@@ -95,7 +96,8 @@ Packet* ReadBuffer::GetPacket() {
     PacketHead head;
     MemcopyFromBuffer(reinterpret_cast<char*>(&head), sizeof(PacketHead));
     RemoveData(sizeof(PacketHead));
-    Packet* packet = new Packet(head.msg_id_);
+    // get packet
+    auto packet = new Packet(head.msg_id_);
     packet->ReAlloc(total_packet_size);
     char* buffer = (char*)malloc(total_packet_size);
     MemcopyFromBuffer(buffer, total_packet_size);

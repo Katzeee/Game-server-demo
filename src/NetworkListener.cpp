@@ -58,19 +58,6 @@ void NetworkListener::Update() {
             Accept();
         }
         Select();
-        for (auto it : connects_) {
-            if (it.second->HasRecvData()) {
-                Packet* packet = it.second->GetPacket();
-                if (!packet) {
-                    continue;
-                }
-                char* buffer = (char*)malloc(packet->GetSize());
-                packet->MemcopyFromBuffer(buffer, packet->GetSize());
-                std::cout << "recv msgid: " << packet->GetMsgId() << " data: " << buffer << std::endl;
-                free(buffer);
-                it.second->SendPacket(packet);
-            }
-        }
     }
 }
 } // end namespace xac
