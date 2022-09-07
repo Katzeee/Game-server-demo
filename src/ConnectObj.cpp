@@ -13,12 +13,13 @@ ConnectObj::ConnectObj(int socket_fd) : socket_fd_(socket_fd) {
 bool ConnectObj::Send() {
     while (true) {
         char* buffer = nullptr;
-        if (write_buffer_->GetSize() <= 0) {
+        auto need_send_size = write_buffer_->GetSize();
+        if (need_send_size <= 0) {
             return true;
         }
-        buffer = (char*)malloc(write_buffer_->GetSize());
-        write_buffer_->MemcopyFromBuffer(buffer, write_buffer_->GetSize());
-        auto send_size = ::send(socket_fd_, buffer, sizeof(buffer), 0);
+        buffer = (char*)malloc(need_send_size);
+        write_buffer_->MemcopyFromBuffer(buffer, need_send_size);
+        auto send_size = ::send(socket_fd_, buffer, need_send_size, 0);
         free(buffer);
         if (send_size > 0) {
             write_buffer_->RemoveData(send_size);

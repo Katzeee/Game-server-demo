@@ -67,8 +67,8 @@ void NetworkListener::Update() {
                 char* buffer = (char*)malloc(packet->GetSize());
                 packet->MemcopyFromBuffer(buffer, packet->GetSize());
                 std::cout << buffer << std::endl;
-                delete packet;
                 free(buffer);
+                it.second->SendPacket(packet);
             }
         }
     }
