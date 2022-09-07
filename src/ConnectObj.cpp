@@ -19,6 +19,7 @@ bool ConnectObj::Send() {
         buffer = (char*)malloc(write_buffer_->GetSize());
         write_buffer_->MemcopyFromBuffer(buffer, write_buffer_->GetSize());
         auto send_size = ::send(socket_fd_, buffer, sizeof(buffer), 0);
+        free(buffer);
         if (send_size > 0) {
             write_buffer_->RemoveData(send_size);
             return true;
@@ -89,6 +90,7 @@ Packet* ReadBuffer::GetPacket() {
     if (size_ < total_packet_size + sizeof(PacketHead)) { // check whether enough length for whole data packet
         return nullptr;
     }
+    // get packet head
     PacketHead head;
     MemcopyFromBuffer(reinterpret_cast<char*>(&head), sizeof(PacketHead));
     RemoveData(sizeof(PacketHead));
@@ -97,8 +99,7 @@ Packet* ReadBuffer::GetPacket() {
     char* buffer = (char*)malloc(total_packet_size);
     MemcopyFromBuffer(buffer, total_packet_size);
     RemoveData(total_packet_size);
-    packet->MemcopyToBuffer(buffer, total_packet_size);
-    packet->FillData(total_packet_size);
+    packet->SetMessageData(buffer, total_packet_size);
     free(buffer);
     return packet;
 }

@@ -18,6 +18,7 @@ public:
     Packet() = delete;
     Packet(uint16_t msg_id) : msg_id_(msg_id) {}
     uint16_t GetMsgId() { return msg_id_; }
+    void SetMessageData(char* src, size_t size);
     ~Packet() {}
 protected:
     uint16_t msg_id_;
