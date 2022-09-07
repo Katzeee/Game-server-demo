@@ -83,7 +83,6 @@ void ConnectObj::SendPacket(Packet* packet) {
 }
 
 Packet* ReadBuffer::GetPacket() {
-    new char[100];
     if (size_ < sizeof(uint16_t)) { // check whether enough length for data size
         return nullptr;
     }

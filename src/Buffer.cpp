@@ -5,14 +5,14 @@ namespace xac {
 Buffer::Buffer() {
 	size_ = 0;
 	capacity_ = 1 * 128;
-	//buffer = (char*)::malloc(capacity_);	
-    buffer = new char[capacity_];
-    // memset(buffer, 0, capacity_);
+	//buffer_ = (char*)::malloc(capacity_);	
+    buffer_ = new char[capacity_];
+    // memset(buffer_, 0, capacity_);
 }
 
 Buffer::Buffer(size_t size) : size_(0), capacity_(size) {
-	buffer = (char*)malloc(size);
-    memset(buffer, 0, capacity_);
+	buffer_ = (char*)malloc(size);
+    memset(buffer_, 0, capacity_);
 }
 
 void Buffer::ReAlloc(size_t size = 0) {
@@ -23,10 +23,10 @@ void Buffer::ReAlloc(size_t size = 0) {
         size = capacity_;
     }
     char* new_buffer = (char*)malloc(capacity_ + size);
-    memcpy(new_buffer, buffer, capacity_);
+    memcpy(new_buffer, buffer_, capacity_);
     capacity_ += size;
-    free(buffer);
-    buffer = new_buffer;
+    free(buffer_);
+    buffer_ = new_buffer;
 }
 
 bool Buffer::MemcopyToBuffer(char* src, size_t size) {
@@ -35,22 +35,22 @@ bool Buffer::MemcopyToBuffer(char* src, size_t size) {
         std::cout << "No enough position" << std::endl;
         return false;
     }
-	memcpy(buffer + end_, src, size);
+	memcpy(buffer_ + end_, src, size);
     return true;
 }
 
 bool Buffer::MemcopyFromBuffer(char* des, size_t size) {
-    // size_ is fake to indicate the used part of a buffer having removed data. It is correct to calculate the emptysieze but cannot reflect the real size
+    // size_ is fake to indicate the used part of a buffer_ having removed data. It is correct to calculate the emptysieze but cannot reflect the real size
     if (size_ < size) {
         std::cout << "Don't have enough data" << std::endl;
         return false;
     }
-	memcpy(des, buffer + start_, size);
+	memcpy(des, buffer_ + start_, size);
     return true;
 }
 
 Buffer::~Buffer() {
-    free(buffer);
+    free(buffer_);
 }
 
 size_t Buffer::GetSize() {
@@ -83,6 +83,10 @@ bool Buffer::RemoveData(size_t size) {
     return true;
 }
 
+char* Buffer::GetBufferAddr() {
+    return buffer_ + end_;
+}
+
 size_t RingBuffer::GetEmptySize() {
     if (end_ >= start_) {
         return capacity_ - end_ + start_;
@@ -96,11 +100,15 @@ bool RingBuffer::MemcopyFromBuffer(char* des, size_t size) {
         std::cout << "Don't have enough data" << std::endl;
         return false;
     }
-    if (end_ > start_) {
-        memcpy(des, buffer + start_, size);
+    if (end_ >= start_) {
+        memcpy(des, buffer_ + start_, size);
     } else {
-        memcpy(des, buffer + start_, capacity_ - start_); // get rear
-        memcpy(des + capacity_ - start_, buffer, size - capacity_ + start_); // get front
+        if (size <= capacity_ - start_) { // no data are in front
+            memcpy(des, buffer_ + start_, size); // get all data in rear
+        } else {
+            memcpy(des, buffer_ + start_, capacity_ - start_); // get rear
+            memcpy(des + capacity_ - start_, buffer_, size - capacity_ + start_); // get front
+        }
     }
     return true;
 }
@@ -108,19 +116,19 @@ bool RingBuffer::MemcopyFromBuffer(char* des, size_t size) {
 bool RingBuffer::MemcopyToBuffer(char* src, size_t size) {
     auto empty_size = capacity_ - size_;
     if (empty_size <= size) {
-        std::cout << "No enough position!" << std::endl;
+        std::cout << "Here No enough position!" << std::endl;
         return false;
     }
     if (end_ >= start_) {
         if (capacity_ - end_ >= size) {
-            memcpy(buffer + end_, src, size);
+            memcpy(buffer_ + end_, src, size);
         } else {
             auto rear_empty = capacity_ - end_;
-            memcpy(buffer + end_, src, rear_empty); // fill rear
-            memcpy(buffer, src + rear_empty, size - rear_empty); // fill front
+            memcpy(buffer_ + end_, src, rear_empty); // fill rear
+            memcpy(buffer_, src + rear_empty, size - rear_empty); // fill front
         }
     } else {
-        memcpy(buffer + end_, src, size);
+        memcpy(buffer_ + end_, src, size);
     }
     return true;
 }

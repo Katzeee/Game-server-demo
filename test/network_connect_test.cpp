@@ -4,17 +4,19 @@
 using namespace xac;
 
 int main() {
-    NetworkConnecter* network_connecter = new NetworkConnecter();
-    network_connecter->Connect("127.0.0.1", 2233);
     // network_connecter->Update();
-    auto t1 = std::thread([network_connecter](){
-        std::cout << "t1" << std::endl;
-        network_connecter->Update();
-    });
-    // auto t2 = std::thread([network_connecter](){
-    //     std::cout << "t2" << std::endl;
-    //     network_connecter->Update();
-    // });
-    t1.join();
-    //t2.join();
+    NetworkConnecter* network_conn[5];
+    std::thread t[5];
+    for (auto i = 0; i < 5; i++) {
+        network_conn[i] = new NetworkConnecter();
+        network_conn[i]->Connect("127.0.0.1", 2233);
+        t[i] = std::thread([network_conn, i](){
+            std::cout << "t" << i << std::endl;
+            network_conn[i]->Update();
+        });
+    }
+    
+    for (auto i = 0; i < 5; i++) {
+        t[i].join();
+    }
 }

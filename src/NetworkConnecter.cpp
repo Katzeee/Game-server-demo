@@ -23,20 +23,20 @@ bool NetworkConnecter::Connect(std::string ip_addr, uint16_t port) {
     ConnectObj* connect_obj = new ConnectObj(master_socket_fd_);
     connects_.insert(std::pair(master_socket_fd_, connect_obj));
 
-    auto packet = new Packet(3);
-    std::string buffer("sssssssssssssssssssssssssssssss");
-    packet->SetMessageData(const_cast<char*>(buffer.c_str()), buffer.length());
-    
-    std::cout << "send msgid: " << packet->GetMsgId() << " data: " << buffer << std::endl;
-    connect_obj->SendPacket(packet);
     return true;
 }
 
 void NetworkConnecter::Update() {
-    auto i = 2;
+    auto i = 5;
     while (i--) {
+        auto packet = new Packet(3);
+        std::string buffer("sssssssssssssssssssssssssssssss");
+        packet->SetMessageData(const_cast<char*>(buffer.c_str()), buffer.length());
+        for (auto it : connects_) {
+            it.second->SendPacket(packet);
+            std::cout << "send msgid: " << packet->GetMsgId() << " data: " << buffer << std::endl;
+        }
         Select();
-        
     }
 }
 
