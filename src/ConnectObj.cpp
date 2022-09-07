@@ -54,7 +54,7 @@ bool ConnectObj::Receive() {
             if ((ssize_t)read_buffer_->GetEmptySize() <= data_size) {
                 read_buffer_->ReAlloc(data_size);
             }
-            std::cout << "recv " << data_size <<  std::endl;
+            // std::cout << "recv " << data_size <<  std::endl;
             read_buffer_->MemcopyToBuffer(buffer, data_size);
             read_buffer_->FillData(data_size);
         } else {

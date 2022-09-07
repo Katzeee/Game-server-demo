@@ -16,11 +16,13 @@ public:
     NetworkBase() {}
     ~NetworkBase();
     bool Select();
+    virtual void Update() = 0;
 protected:
     int master_socket_fd_{-1}; // listen fd or connect fd
-    
     std::map<int, ConnectObj*> connects_;
     fd_set read_fds_, write_fds_, except_fds_;
+    static void SetSocketOpt(int socket);
+    static void SetNonBlock(int socket);
 };
 
 }

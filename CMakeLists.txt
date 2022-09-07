@@ -19,10 +19,14 @@ add_executable(client test/client.cpp)
 add_dependencies(client libserver)
 target_link_libraries(client libserver)
 
-add_executable(buffertest test/buffertest.cpp)
+add_executable(buffertest test/buffer_test.cpp)
 add_dependencies(buffertest libserver)
 target_link_libraries(buffertest libserver)
 
-add_executable(network test/networkclasstest.cpp)
-add_dependencies(network libserver)
-target_link_libraries(network libserver)
+add_executable(network_listen test/network_listen_test.cpp)
+add_dependencies(network_listen libserver)
+target_link_libraries(network_listen libserver)
+
+add_executable(network_conn test/network_connect_test.cpp)
+add_dependencies(network_conn libserver)
+target_link_libraries(network_conn libserver)

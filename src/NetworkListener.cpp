@@ -1,5 +1,4 @@
 #include <memory.h>
-#include <fcntl.h>
 #include <arpa/inet.h>
 #include "NetworkListener.h"
 #include "ConnectObj.h"
@@ -11,6 +10,7 @@ bool NetworkListener::Listen(std::string ip_addr, uint16_t port) {
     master_socket_fd_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (master_socket_fd_ < 0) {
         // TODO:LOG
+        std::cout << "socket error" << std::endl;
         return false;
     }
     sockaddr_in sock_addr;
@@ -20,15 +20,16 @@ bool NetworkListener::Listen(std::string ip_addr, uint16_t port) {
     sock_addr.sin_port = htons(port);
     if (::bind(master_socket_fd_, (sockaddr*)&sock_addr, sizeof(sockaddr)) < 0) {
         // TODO:LOG
+        std::cout << "bind error" << std::endl;
         return false;
     }
     int back_log = 10;
     if (::listen(master_socket_fd_, back_log) < 0) {
         // TODO:LOG
+        std::cout << "listen error" << std::endl;
         return false;
     }
-    int flags = fcntl(master_socket_fd_, F_GETFL, 0);
-    fcntl(master_socket_fd_, F_SETFL, flags | O_NONBLOCK);
+    NetworkBase::SetNonBlock(master_socket_fd_);
     return true;
 }
 
@@ -42,8 +43,7 @@ int NetworkListener::Accept() {
         if (socket_fd <= 0) {
             return res;
         }
-        int flags = fcntl(socket_fd, F_GETFL, 0);
-        fcntl(socket_fd, F_SETFL, flags | O_NONBLOCK);
+        NetworkBase::SetSocketOpt(socket_fd);
         ConnectObj* connectobj_ptr = new ConnectObj(socket_fd);
         std::cout << "accept " << socket_fd <<  std::endl;
         connects_.insert(std::pair(socket_fd, connectobj_ptr));
@@ -66,7 +66,7 @@ void NetworkListener::Update() {
                 }
                 char* buffer = (char*)malloc(packet->GetSize());
                 packet->MemcopyFromBuffer(buffer, packet->GetSize());
-                std::cout << buffer << std::endl;
+                std::cout << "recv msgid: " << packet->GetMsgId() << " data: " << buffer << std::endl;
                 free(buffer);
                 it.second->SendPacket(packet);
             }

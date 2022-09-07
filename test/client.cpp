@@ -29,8 +29,8 @@ int main() {
     ::send(socket_fd, buf.c_str(), buf.length(), 0);
     
 
-    // ::recv(socket_fd, buffer, 10, 0); 
-    // std::cout << buffer << std::endl;
+    ::recv(socket_fd, buffer, 10, 0); 
+    std::cout << buffer + 4 << std::endl;
     ::shutdown(socket_fd, SHUT_RDWR);
     return 0;
 }

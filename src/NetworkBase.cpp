@@ -1,4 +1,5 @@
 #include <memory.h>
+#include <fcntl.h>
 #include "NetworkBase.h"
 
 namespace xac {
@@ -59,4 +60,19 @@ bool NetworkBase::Select() {
     }
     return true;
 }
+
+
+void NetworkBase::SetSocketOpt(int socket) {
+    bool is_reuse_addr = true;
+    setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, (void*)&is_reuse_addr, sizeof(is_reuse_addr));
+    int net_timeout = 3000;
+    setsockopt(socket, SOL_SOCKET, SO_SNDTIMEO, (void*)&net_timeout, sizeof(net_timeout));
+    setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (void*)&net_timeout, sizeof(net_timeout));
+    NetworkBase::SetNonBlock(socket);
 }
+
+void NetworkBase::SetNonBlock(int socket) {
+    int flags = fcntl(socket, F_GETFL, 0);
+    fcntl(socket, F_SETFL, flags | O_NONBLOCK);
+}
+} // end namespace xac

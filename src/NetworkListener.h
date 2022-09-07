@@ -6,7 +6,7 @@
 namespace xac {
 class NetworkListener : public NetworkBase {
 public:
-    void Update();
+    void Update() override;
     bool Listen(std::string ip_addr, uint16_t port);
 protected:
     virtual int Accept();
