@@ -43,7 +43,7 @@ bool ConnectObj::HasRecvData() {
     return false;
 }
 bool ConnectObj::Receive() {
-    char* buffer = (char*)::malloc(sizeof(PacketHead));
+    char* buffer = (char*)::malloc(read_buffer_->GetEmptySize());
     ssize_t data_size = 0;
     while(true) {
         if (read_buffer_->GetEmptySize() <= sizeof(PacketHead)) {
