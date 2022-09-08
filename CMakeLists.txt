@@ -30,3 +30,8 @@ target_link_libraries(network_listen libserver)
 add_executable(network_conn test/network_connect_test.cpp)
 add_dependencies(network_conn libserver)
 target_link_libraries(network_conn libserver)
+
+
+add_executable(singleton_test test/singleton_test.cpp)
+add_dependencies(singleton_test libserver)
+target_link_libraries(singleton_test libserver)

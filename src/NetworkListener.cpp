@@ -53,11 +53,9 @@ int NetworkListener::Accept() {
 }
 
 void NetworkListener::Update() {
-    while(true) {
-        if (FD_ISSET(master_socket_fd_, &read_fds_)) {
-            Accept();
-        }
-        Select();
+    if (FD_ISSET(master_socket_fd_, &read_fds_)) {
+        Accept();
     }
+    Select();
 }
 } // end namespace xac

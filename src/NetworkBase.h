@@ -11,12 +11,13 @@
 
 namespace xac {
 
-class NetworkBase {
+class NetworkBase : public IDisposable {
 public:
     NetworkBase() {}
     virtual ~NetworkBase();
     bool Select();
-    virtual void Update() = 0;
+    void Dispose() override {}
+    // virtual void Update() = 0;
 protected:
     int master_socket_fd_{-1}; // listen fd or connect fd
     std::map<int, ConnectObj*> connects_;

@@ -1,5 +1,6 @@
 #pragma	once
 #include <iostream>
+#include "IDisposable.h"
 
 namespace xac {
 
@@ -12,7 +13,7 @@ namespace xac {
 //     std::cout << "free " << std::endl;
 //     ::free(ptr);
 // }
-class Buffer {
+class Buffer : public IDisposable {
 protected:
 	char* buffer_ = nullptr;
 	size_t start_ = 0; // buffer start position
@@ -25,6 +26,7 @@ public:
 	Buffer(size_t size);
 	size_t GetSize();
 	size_t GetCapacity();
+    void Dispose() override { delete[] buffer_; }
 	virtual void ReAlloc(size_t size);
     virtual size_t GetEmptySize();
 	virtual bool MemcopyFromBuffer(char* des, size_t size);

@@ -50,7 +50,7 @@ bool Buffer::MemcopyFromBuffer(char* des, size_t size) {
 }
 
 Buffer::~Buffer() {
-    free(buffer_);
+    delete[] buffer_;
 }
 
 size_t Buffer::GetSize() {
