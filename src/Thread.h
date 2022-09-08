@@ -15,8 +15,10 @@ public:
     void Start();
     static void Update(Thread* this_class);
     void Stop();
+    void AddThreadObj(ThreadObj* thread_obj);
 
 private:
+    bool is_running_ = false;
     std::thread* thread_ = nullptr;
     std::mutex thread_lock_;
     std::list<ThreadObj*> thread_objs_;

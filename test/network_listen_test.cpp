@@ -6,12 +6,12 @@
 using namespace xac;
 
 int main() {
-    // auto server = new Server();
-    // server->Listen("127.0.0.1", 2233);
-    // server->Update();
-    // auto i = 100;
-    // while(i--) {
-    //     new Packet(100);
-    // }
+    auto server = new Server();
+    server->Listen("127.0.0.1", 2233);
+    server->Update();
+    auto i = 100;
+    while(i--) {
+        new Packet(100);
+    }
     return 0;
 }

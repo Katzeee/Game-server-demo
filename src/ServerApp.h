@@ -7,10 +7,11 @@ namespace xac {
 class ServerApp : public IDisposable {
 public:
     using APP_TYPE = uint16_t;
+    ServerApp() = delete;
     ServerApp(APP_TYPE app_type);
     ~ServerApp();
     void Dispose() override;
-    virtual void InitApp() = 0;
+    virtual void InitApp() {}
     void StartAllThread();
     void Run();
 
