@@ -1,10 +1,11 @@
 #pragma once
-#pragma pack(push)
-#pragma pack(4)
 #include <iostream>
 #include "Buffer.h"
 
 namespace xac {
+
+#pragma pack(push)
+#pragma pack(4)
 struct PacketHead {
     // exclude head size
     uint16_t data_size_;
@@ -21,8 +22,9 @@ public:
     }
     uint16_t GetMsgId() { return msg_id_; }
     void SetMessageData(char* src, size_t size);
+    void SetMessageData(std::string src);
     ~Packet() { 
-        //std::cout << "free packet" << std::endl; 
+        std::cout << "free packet " << buffer_ << std::endl; 
     }
 protected:
     uint16_t msg_id_;

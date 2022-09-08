@@ -5,9 +5,10 @@ using namespace xac;
 
 int main() {
     // network_connecter->Update();
-    NetworkConnecter* network_conn[5];
-    std::thread t[5];
-    for (auto i = 0; i < 5; i++) {
+    constexpr int count = 4;
+    NetworkConnecter* network_conn[count];
+    std::thread t[count];
+    for (auto i = 0; i < count; i++) {
         network_conn[i] = new NetworkConnecter();
         network_conn[i]->Connect("127.0.0.1", 2233);
         t[i] = std::thread([network_conn, i](){
@@ -16,7 +17,7 @@ int main() {
         });
     }
     
-    for (auto i = 0; i < 5; i++) {
+    for (auto i = 0; i < count; i++) {
         t[i].join();
     }
 }
