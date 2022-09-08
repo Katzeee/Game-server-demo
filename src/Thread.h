@@ -12,11 +12,12 @@ public:
     Thread();
     ~Thread();
     void Dispose();
-    void Start();
-    static void Update(Thread* this_class);
-    void Stop();
-    void AddThreadObj(ThreadObj* thread_obj);
-
+    void Start(); // start thread
+    void Update(); // update function
+    void Stop(); // stop thread
+    void AddThreadObj(ThreadObj* thread_obj); // add a thread object to this thread
+    bool IsRunning() { return is_running_; } // check if this thread is running
+    size_t ThreadObjCount() { return thread_objs_.size(); } // return the count of thread objects on this thread
 private:
     bool is_running_ = false;
     std::thread* thread_ = nullptr;

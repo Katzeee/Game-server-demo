@@ -9,9 +9,9 @@ ThreadManager::ThreadManager() {
 
 void ThreadManager::StartAllThread() {
     auto threads_copy = std::list<Thread*>();
-    thread_lock_.lock();
+    lock_.lock();
     std::copy(threads_.begin(), threads_.end(), std::back_inserter(threads_copy));
-    thread_lock_.unlock();
+    lock_.unlock();
     for (auto it : threads_copy) {
         it->Start();
     }
@@ -19,16 +19,43 @@ void ThreadManager::StartAllThread() {
 
 void ThreadManager::NewThread() {
     auto thread = new Thread();
-    thread_lock_.lock();
+    lock_.lock();
     threads_.emplace_back(thread);
-    thread_lock_.unlock();
+    lock_.unlock();
 }
 
 void ThreadManager::AddObjToThread(ThreadObj* thread_obj) {
-    thread_lock_.lock();
-    threads_[0]->AddThreadObj(thread_obj);
+    lock_.lock();
+    auto thread = GetLeastObjThread();
+    if (thread == nullptr) {
+        throw std::logic_error("no thread!");
+        return;
+    }
+    thread->AddThreadObj(thread_obj);
     std::cout << "add thread obj" << std::endl;
-    thread_lock_.unlock();
+    lock_.unlock();
 }
 
+bool ThreadManager::IsLoop() {
+    lock_.lock();
+    for (auto it : threads_)  {
+        if (it->IsRunning()) {
+            return true;
+        }
+    }
+    lock_.unlock();
+    return false;
+}
+
+Thread* ThreadManager::GetLeastObjThread() {
+    size_t count = -1; // LONG_MAX
+    Thread* res = nullptr;
+    for (auto& it : threads_) {
+        if (it->ThreadObjCount() < count) {
+            count = it->ThreadObjCount();
+            res = it;
+        }
+    }
+    return res;
+}
 }

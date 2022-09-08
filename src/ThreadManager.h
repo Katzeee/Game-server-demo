@@ -19,8 +19,10 @@ public:
     void StartAllThread();
     void NewThread();
     void AddObjToThread(ThreadObj* thread_obj);
+    bool IsLoop();
 private:
-    std::mutex thread_lock_;
+    Thread* GetLeastObjThread();
+    std::mutex lock_;
     std::vector<Thread*> threads_;
 };
 

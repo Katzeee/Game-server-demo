@@ -10,7 +10,7 @@ Server::Server() : is_running_(true) {
 void Server::DataHandler() {
     for (auto it : connects_) {
         if (it.second->HasRecvData()) {
-            Packet* packet = it.second->GetPacket();
+            auto packet = it.second->GetPacket();
             if (!packet) {
                 continue;
             }
@@ -18,7 +18,6 @@ void Server::DataHandler() {
             packet->MemcopyFromBuffer(buffer, packet->GetSize());
             std::cout << "recv msgid: " << packet->GetMsgId() << " data: " << buffer << std::endl;
             free(buffer);
-            delete packet;
         }
     }
 

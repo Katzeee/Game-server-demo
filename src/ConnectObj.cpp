@@ -74,15 +74,15 @@ ConnectObj::~ConnectObj() {
     Dispose();
 }
 
-Packet* ConnectObj::GetPacket() {
+std::shared_ptr<Packet> ConnectObj::GetPacket() {
     return read_buffer_->GetPacket();
 }
 
-void ConnectObj::SendPacket(Packet* packet) {
+void ConnectObj::SendPacket(std::shared_ptr<Packet> packet) {
     write_buffer_->AddPacket(packet);
 }
 
-Packet* ReadBuffer::GetPacket() {
+std::shared_ptr<Packet> ReadBuffer::GetPacket() {
     if (size_ < sizeof(uint16_t)) { // check whether enough length for data size
         return nullptr;
     }
@@ -96,7 +96,7 @@ Packet* ReadBuffer::GetPacket() {
     MemcopyFromBuffer(reinterpret_cast<char*>(&head), sizeof(PacketHead));
     RemoveData(sizeof(PacketHead));
     // get packet
-    auto packet = new Packet(head.msg_id_);
+    auto packet = std::make_shared<Packet>(head.msg_id_);
     packet->ReAlloc(total_packet_size);
     char* buffer = (char*)malloc(total_packet_size);
     MemcopyFromBuffer(buffer, total_packet_size);
@@ -106,7 +106,7 @@ Packet* ReadBuffer::GetPacket() {
     return packet;
 }
 
-void WriteBuffer::AddPacket(Packet* packet) {
+void WriteBuffer::AddPacket(std::shared_ptr<Packet> packet) {
     PacketHead head;
     head.msg_id_ = packet->GetMsgId();
     head.data_size_ = packet->GetSize();
@@ -122,7 +122,6 @@ void WriteBuffer::AddPacket(Packet* packet) {
     packet->MemcopyFromBuffer(buffer, head.data_size_);
     MemcopyToBuffer(buffer, head.data_size_);
     FillData(head.data_size_);
-    delete packet;
     free(buffer);
 }
 }

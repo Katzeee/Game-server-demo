@@ -29,7 +29,7 @@ bool NetworkConnecter::Connect(std::string ip_addr, uint16_t port) {
 void NetworkConnecter::Update() {
     auto i = 5;
     while (i--) {
-        auto packet = new Packet(3);
+        auto packet = std::make_shared<Packet>(3);
         std::string buffer("sssssssssssssssssssssssssssssss");
         packet->SetMessageData(const_cast<char*>(buffer.c_str()), buffer.length());
         for (auto it : connects_) {

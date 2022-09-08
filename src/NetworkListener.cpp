@@ -38,6 +38,8 @@ int NetworkListener::Accept() {
     memset(&sock_addr, 0, sizeof(sockaddr));
     socklen_t sock_addr_len = sizeof(sockaddr);
     int res = 0;
+    auto packet = std::make_shared<Packet>(1);
+    packet->SetMessageData(const_cast<char*>("acc"), 3);
     while(true) {
         auto socket_fd = ::accept(master_socket_fd_, &sock_addr, &sock_addr_len);
         if (socket_fd <= 0) {
@@ -46,9 +48,13 @@ int NetworkListener::Accept() {
         NetworkBase::SetSocketOpt(socket_fd);
         ConnectObj* connectobj_ptr = new ConnectObj(socket_fd);
         std::cout << "accept " << socket_fd <<  std::endl;
+
+        connectobj_ptr->SendPacket(packet);
+
         connects_.insert(std::pair(socket_fd, connectobj_ptr));
         res++;
     }
+    //delete packet;   
     return res;
 }
 

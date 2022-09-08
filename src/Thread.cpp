@@ -8,10 +8,13 @@ Thread::Thread() {
 }
 
 void Thread::Dispose() {
+    Stop();
     delete thread_;
+    thread_ = nullptr;
     for (auto it : thread_objs_) {
         delete it;
     }
+    thread_objs_.clear();
 }
 
 Thread::~Thread() {
@@ -20,24 +23,25 @@ Thread::~Thread() {
 
 void Thread::Start() {
     is_running_ = true;
+    std::cout << "thread start" << std::endl;
     thread_ = new std::thread([this](){
         while (is_running_) {
-            Thread::Update(this);
+            Thread::Update();
         }
     });
 }
-void Thread::Update(Thread* this_class) {
+void Thread::Update() {
     std::list<ThreadObj*> thread_objs_copy;
-    this_class->thread_lock_.lock();
-    std::copy(this_class->thread_objs_.begin(), this_class->thread_objs_.end(), std::back_inserter(thread_objs_copy));
-    this_class->thread_lock_.unlock();
-    std::cout << "update" << std::endl;
+    thread_lock_.lock();
+    std::copy(thread_objs_.begin(), thread_objs_.end(), std::back_inserter(thread_objs_copy));
+    thread_lock_.unlock();
     for (auto it : thread_objs_copy) {
         it->Update();
     }
 }
 void Thread::Stop() {
     is_running_ = false;
+    std::cout << "thread stop" << std::endl;
 }
 
 void Thread::AddThreadObj(ThreadObj* thread_obj) {
