@@ -5,7 +5,8 @@ namespace xac {
 Buffer::Buffer() {
 	size_ = 0;
 	capacity_ = 1 * 128;
-    buffer_ = new char[capacity_];
+    buffer_ = new char[capacity_]{0};
+    
 }
 
 Buffer::Buffer(size_t size) : size_(0), capacity_(size) {
