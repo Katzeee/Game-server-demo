@@ -57,8 +57,17 @@ bool ConnectObj::Receive() {
             // std::cout << "recv " << data_size <<  std::endl;
             read_buffer_->MemcopyToBuffer(buffer, data_size);
             read_buffer_->FillData(data_size);
+        } else if (data_size == 0) {
+            ::free(buffer);
+            return false;
         } else {
-            break;
+            const auto socket_error = errno;
+            if (socket_error == EINTR || socket_error == EWOULDBLOCK || socket_error == EAGAIN) {
+                ::free(buffer);
+                return true;
+            }
+            ::free(buffer);
+            return false;
         }
     }
     ::free(buffer);
@@ -66,8 +75,14 @@ bool ConnectObj::Receive() {
 }
 
 void ConnectObj::Dispose() {
-    free(read_buffer_);
-    free(write_buffer_);
+    if (read_buffer_) {
+        delete read_buffer_;
+        read_buffer_ = nullptr;
+    }
+    if (write_buffer_) {
+        delete write_buffer_;
+        write_buffer_ = nullptr;
+    }
 }
 
 ConnectObj::~ConnectObj() {

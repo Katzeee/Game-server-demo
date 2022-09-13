@@ -4,6 +4,9 @@
 #include <arpa/inet.h>
 #include <sys/select.h>
 #include <sys/epoll.h>
+#include <netinet/tcp.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include <map>
 
 #include "IDisposable.h"
