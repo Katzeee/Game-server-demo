@@ -4,10 +4,11 @@ if (NOT CMAKE_BUILD_TYPE)
   set (CMAKE_BUILD_TYPE Debug)
 endif()
 set(CMAKE_CXX_STANDARD_REQUIRED 14) 
-set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -rdynamic -Wall -Wno-deprecated -Werror -Wno-unused-function -D_GLIBCXX_DEBUG")
+set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -rdynamic -Wall -Wno-deprecated -Werror -Wno-unused-function -D_GLIBCXX_DEBUG -lprotobuf")
 
 aux_source_directory(src LIB_SRC)
-add_library(libserver STATIC ${LIB_SRC})
+aux_source_directory(src/protobuf PROTO_SRC)
+add_library(libserver STATIC ${LIB_SRC} ${PROTO_SRC})
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

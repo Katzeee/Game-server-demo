@@ -16,7 +16,7 @@ struct PacketHead {
 
 class Packet : public NormalBuffer {
 public:
-    Packet() : msg_id_(0) {}
+    Packet() = delete;
     Packet(uint16_t msg_id) : msg_id_(msg_id) { 
         //std:: cout << "new packet" << std::endl; 
     }
@@ -25,6 +25,20 @@ public:
     void SetMessageData(std::string src);
     ~Packet() { 
         std::cout << "free packet " << buffer_ << std::endl; 
+    }
+
+    template<typename ProtoClass>
+    ProtoClass ParseToProto() {
+        ProtoClass proto;
+        proto.ParsePartialFromArray(GetBufferAddr(), GetSize());
+        return proto;
+    }
+    template<typename ProtoClass>
+    void SerializeToBuffer(ProtoClass& proto_class) {
+        auto total_size = proto_class.ByteSizeLong();
+        ReAlloc(total_size);
+        proto_class.SerializePartialToArray(GetBufferAddr(), total_size);
+        FillData(total_size);
     }
 protected:
     uint16_t msg_id_;

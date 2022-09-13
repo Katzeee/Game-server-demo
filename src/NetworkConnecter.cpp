@@ -28,13 +28,15 @@ bool NetworkConnecter::Connect(std::string ip_addr, uint16_t port) {
 
 void NetworkConnecter::Update() {
     auto i = 5;
-    auto packet = std::make_shared<Packet>(3);
-    std::string buffer("sssssssssssssssssssssssssssssss");
-    packet->SetMessageData(buffer);
+    auto packet = std::make_shared<Packet>(Proto::MsgId::SendData);
+    Proto::TestMsg test_msg;
     while (i--) {
+        test_msg.set_index(i);
+        test_msg.set_msg("sssss");
+        packet->SerializeToBuffer(test_msg);
         for (auto it : connects_) {
             it.second->SendPacket(packet);
-            std::cout << "send msgid: " << packet->GetMsgId() << " data: " << buffer << std::endl;
+            std::cout << "send msgid: " << packet->GetMsgId() << " msg_index: " << i << std::endl;
         }
         Select();
     }

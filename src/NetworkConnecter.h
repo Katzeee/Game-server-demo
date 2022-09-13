@@ -1,5 +1,7 @@
 #pragma once
 #include "NetworkBase.h"
+#include "protobuf/msg.pb.h"
+#include "protobuf/proto_msg_id.pb.h"
 
 namespace xac {
 
