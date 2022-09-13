@@ -30,6 +30,7 @@ public:
     bool Receive();
     void Dispose() override;
     void SendPacket(std::shared_ptr<Packet> packet);
+    int GetSocket() const;
     std::shared_ptr<Packet> GetPacket();
 
 protected:

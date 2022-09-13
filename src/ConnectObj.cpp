@@ -74,6 +74,10 @@ bool ConnectObj::Receive() {
     return true;
 }
 
+int ConnectObj::GetSocket() const {
+    return socket_fd_;
+}
+
 void ConnectObj::Dispose() {
     if (read_buffer_) {
         delete read_buffer_;
