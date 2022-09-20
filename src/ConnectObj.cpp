@@ -3,6 +3,7 @@
 #include <cstring>
 #include <memory>
 #include "ConnectObj.h"
+#include "ThreadManager.h"
 
 namespace xac {
 
@@ -43,6 +44,7 @@ bool ConnectObj::HasRecvData() {
     return false;
 }
 bool ConnectObj::Receive() {
+    auto hasData = false;
     char* buffer = (char*)::malloc(read_buffer_->GetEmptySize());
     ssize_t data_size = 0;
     while(true) {
@@ -58,20 +60,27 @@ bool ConnectObj::Receive() {
             read_buffer_->MemcopyToBuffer(buffer, data_size);
             read_buffer_->FillData(data_size);
         } else if (data_size == 0) {
-            ::free(buffer);
-            return false;
+            break;
         } else {
             const auto socket_error = errno;
             if (socket_error == EINTR || socket_error == EWOULDBLOCK || socket_error == EAGAIN) {
-                ::free(buffer);
-                return true;
+                hasData = true;
             }
-            ::free(buffer);
-            return false;
+            break;
+        }
+    }
+    if (hasData) {
+        while (true) {
+            const auto packet = read_buffer_->GetPacket();
+            if (packet == nullptr) {
+                break;
+            }
+            std::cout << "dispatch one" << std::endl;
+            ThreadManager::GetInstance()->DispatchMessage(packet);
         }
     }
     ::free(buffer);
-    return true;
+    return hasData;
 }
 
 int ConnectObj::GetSocket() const {
@@ -79,6 +88,10 @@ int ConnectObj::GetSocket() const {
 }
 
 void ConnectObj::Dispose() {
+    if (is_disposed) {
+        return;
+    }
+    std::cout << "shutdown: " << socket_fd_ << std::endl;
     ::shutdown(socket_fd_, SHUT_RDWR);
     if (read_buffer_) {
         delete read_buffer_;
@@ -88,6 +101,7 @@ void ConnectObj::Dispose() {
         delete write_buffer_;
         write_buffer_ = nullptr;
     }
+    is_disposed = true;
 }
 
 ConnectObj::~ConnectObj() {

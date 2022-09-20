@@ -4,6 +4,6 @@ package Proto;
 
 enum MsgId {
     None = 0;
-    SendData = 1;
-    RecvData = 3;
+    MI_TestMsg = 1;
+    MI_RecvData = 3;
 }

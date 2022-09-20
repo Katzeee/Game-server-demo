@@ -44,3 +44,8 @@ target_link_libraries(serverapp_test libserver)
 add_executable(thread_test test/thread_test.cpp)
 add_dependencies(thread_test libserver)
 target_link_libraries(thread_test libserver)
+
+aux_source_directory(test/message_list_test MSG_TEST_SRC)
+add_executable(msg_list_test ${MSG_TEST_SRC})
+add_dependencies(msg_list_test libserver)
+target_link_libraries(msg_list_test libserver)

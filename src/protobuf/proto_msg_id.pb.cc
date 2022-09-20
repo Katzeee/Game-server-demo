@@ -29,13 +29,13 @@ static constexpr ::_pbi::MigrationSchema* schemas = nullptr;
 static constexpr ::_pb::Message* const* file_default_instances = nullptr;
 
 const char descriptor_table_protodef_proto_5fmsg_5fid_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\022proto_msg_id.proto\022\005Proto*-\n\005MsgId\022\010\n\004"
-  "None\020\000\022\014\n\010SendData\020\001\022\014\n\010RecvData\020\003b\006prot"
-  "o3"
+  "\n\022proto_msg_id.proto\022\005Proto*2\n\005MsgId\022\010\n\004"
+  "None\020\000\022\016\n\nMI_TestMsg\020\001\022\017\n\013MI_RecvData\020\003b"
+  "\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_proto_5fmsg_5fid_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_proto_5fmsg_5fid_2eproto = {
-    false, false, 82, descriptor_table_protodef_proto_5fmsg_5fid_2eproto,
+    false, false, 87, descriptor_table_protodef_proto_5fmsg_5fid_2eproto,
     "proto_msg_id.proto",
     &descriptor_table_proto_5fmsg_5fid_2eproto_once, nullptr, 0, 0,
     schemas, file_default_instances, TableStruct_proto_5fmsg_5fid_2eproto::offsets,

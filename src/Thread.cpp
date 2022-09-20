@@ -32,9 +32,9 @@ void Thread::Start() {
 }
 void Thread::Update() {
     std::list<ThreadObj*> thread_objs_copy;
-    thread_lock_.lock();
+    lock_.lock();
     std::copy(thread_objs_.begin(), thread_objs_.end(), std::back_inserter(thread_objs_copy));
-    thread_lock_.unlock();
+    lock_.unlock();
     for (auto it : thread_objs_copy) {
         it->Update();
     }
@@ -45,14 +45,14 @@ void Thread::Stop() {
 }
 
 void Thread::AddThreadObj(ThreadObj* thread_obj) {
-    thread_lock_.lock();
+    lock_.lock();
     thread_objs_.emplace_back(thread_obj);
-    thread_lock_.unlock();
+    lock_.unlock();
 }
 
 
 void Thread::DispatchMessage(std::shared_ptr<Packet> packet) {
-    auto guard = std::lock_guard(thread_lock_);
+    auto guard = std::lock_guard(lock_);
     for (auto it : thread_objs_) {
         it->InformMessageList(packet);
     }
