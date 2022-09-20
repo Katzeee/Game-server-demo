@@ -47,6 +47,13 @@ bool ThreadManager::IsLoop() {
     return false;
 }
 
+void ThreadManager::DispatchMessage(std::shared_ptr<Packet> packet) {
+    auto guard = std::lock_guard(lock_);
+    for (auto it : threads_) {
+        it->DispatchMessage(packet);
+    }
+}
+
 Thread* ThreadManager::GetLeastObjThread() {
     size_t count = -1; // LONG_MAX
     Thread* res = nullptr;

@@ -50,4 +50,12 @@ void Thread::AddThreadObj(ThreadObj* thread_obj) {
     thread_lock_.unlock();
 }
 
+
+void Thread::DispatchMessage(std::shared_ptr<Packet> packet) {
+    auto guard = std::lock_guard(thread_lock_);
+    for (auto it : thread_objs_) {
+        it->InformMessageList(packet);
+    }
 }
+
+} // end namespace xac

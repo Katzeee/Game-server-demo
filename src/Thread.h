@@ -16,6 +16,7 @@ public:
     void Update(); // update function
     void Stop(); // stop thread
     void AddThreadObj(ThreadObj* thread_obj); // add a thread object to this thread
+    void DispatchMessage(std::shared_ptr<Packet> packet);
     bool IsRunning() { return is_running_; } // check if this thread is running
     size_t ThreadObjCount() { return thread_objs_.size(); } // return the count of thread objects on this thread
 private:

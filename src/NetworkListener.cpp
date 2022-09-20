@@ -65,15 +65,15 @@ void NetworkListener::Update() {
         Accept();
     }
     Select();
-    for (auto it : connects_) {
-        if (it.second->HasRecvData()) {
-            auto packet = it.second->GetPacket();
-            if (!packet) {
-                continue;
-            }
-            auto proto = packet->ParseToProto<Proto::TestMsg>();
-            std::cout << "recv id: " << proto.index() << " msg: " << proto.msg() << std::endl;
-        }
-    }
+    // for (auto it : connects_) {
+    //     if (it.second->HasRecvData()) {
+    //         auto packet = it.second->GetPacket();
+    //         if (!packet) {
+    //             continue;
+    //         }
+    //         auto proto = packet->ParseToProto<Proto::TestMsg>();
+    //         std::cout << "recv id: " << proto.index() << " msg: " << proto.msg() << std::endl;
+    //     }
+    // }
 }
 } // end namespace xac

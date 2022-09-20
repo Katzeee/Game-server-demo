@@ -19,6 +19,7 @@ public:
     void StartAllThread();
     void NewThread();
     void AddObjToThread(ThreadObj* thread_obj);
+    void DispatchMessage(std::shared_ptr<Packet> packet);
     bool IsLoop();
 private:
     Thread* GetLeastObjThread();
