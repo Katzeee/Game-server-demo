@@ -24,20 +24,21 @@ public:
     void SetMessageData(char* src, size_t size);
     void SetMessageData(std::string src);
     ~Packet() { 
-        std::cout << "free packet " << buffer_ << std::endl; 
+        // std::cout << "free packet " << buffer_ << std::endl; 
     }
 
     template<typename ProtoClass>
     ProtoClass ParseToProto() {
         ProtoClass proto;
-        proto.ParsePartialFromArray(GetBufferAddr(), GetSize());
+        proto.ParsePartialFromArray(GetBufferStartAddr(), GetSize());
+        RemoveData(GetSize());
         return proto;
     }
     template<typename ProtoClass>
     void SerializeToBuffer(ProtoClass& proto_class) {
         auto total_size = proto_class.ByteSizeLong();
         ReAlloc(total_size);
-        proto_class.SerializePartialToArray(GetBufferAddr(), total_size);
+        proto_class.SerializePartialToArray(GetBufferEndAddr(), total_size);
         FillData(total_size);
     }
 protected:

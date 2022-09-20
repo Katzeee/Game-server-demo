@@ -79,6 +79,7 @@ int ConnectObj::GetSocket() const {
 }
 
 void ConnectObj::Dispose() {
+    ::shutdown(socket_fd_, SHUT_RDWR);
     if (read_buffer_) {
         delete read_buffer_;
         read_buffer_ = nullptr;

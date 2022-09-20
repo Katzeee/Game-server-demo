@@ -1,11 +1,12 @@
 #include <thread>
+#include <unistd.h>
 #include "../src/NetworkConnecter.h"
 
 using namespace xac;
 
 int main() {
     // network_connecter->Update();
-    constexpr int count = 4;
+    constexpr int count = 1;
     NetworkConnecter* network_conn[count];
     std::thread t[count];
     for (auto i = 0; i < count; i++) {
@@ -20,4 +21,5 @@ int main() {
     for (auto i = 0; i < count; i++) {
         t[i].join();
     }
+    sleep(3);
 }

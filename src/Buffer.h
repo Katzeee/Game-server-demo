@@ -33,7 +33,8 @@ public:
 	virtual bool MemcopyToBuffer(char* src, size_t size);
     virtual bool FillData(size_t size);
     virtual bool RemoveData(size_t size);
-    virtual char* GetBufferAddr();
+    virtual char* GetBufferEndAddr();
+    virtual char* GetBufferStartAddr();
 	virtual ~Buffer();
 };
 

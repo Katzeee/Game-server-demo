@@ -82,7 +82,11 @@ bool Buffer::RemoveData(size_t size) {
     return true;
 }
 
-char* Buffer::GetBufferAddr() {
+char* Buffer::GetBufferStartAddr() {
+    return buffer_ + start_;
+}
+
+char* Buffer::GetBufferEndAddr() {
     return buffer_ + end_;
 }
 

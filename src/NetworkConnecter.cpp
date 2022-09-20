@@ -27,10 +27,10 @@ bool NetworkConnecter::Connect(std::string ip_addr, uint16_t port) {
 }
 
 void NetworkConnecter::Update() {
-    auto i = 5;
-    auto packet = std::make_shared<Packet>(Proto::MsgId::SendData);
-    Proto::TestMsg test_msg;
+    auto i = 2;
     while (i--) {
+        auto packet = std::make_shared<Packet>(Proto::MsgId::SendData);
+        Proto::TestMsg test_msg;
         test_msg.set_index(i);
         test_msg.set_msg("sssss");
         packet->SerializeToBuffer(test_msg);
