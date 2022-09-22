@@ -29,13 +29,14 @@ static constexpr ::_pbi::MigrationSchema* schemas = nullptr;
 static constexpr ::_pb::Message* const* file_default_instances = nullptr;
 
 const char descriptor_table_protodef_proto_5fmsg_5fid_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\022proto_msg_id.proto\022\005Proto*2\n\005MsgId\022\010\n\004"
-  "None\020\000\022\016\n\nMI_TestMsg\020\001\022\017\n\013MI_RecvData\020\003b"
-  "\006proto3"
+  "\n\022proto_msg_id.proto\022\005Proto*o\n\005MsgId\022\010\n\004"
+  "None\020\000\022\016\n\nMI_TestMsg\020\001\022\025\n\020C2L_AccountChe"
+  "ck\020\350\007\022\027\n\022C2L_AccountCheckRs\020\351\007\022\034\n\027MI_Acc"
+  "ountCheckToHttpRs\020\355\007b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_proto_5fmsg_5fid_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_proto_5fmsg_5fid_2eproto = {
-    false, false, 87, descriptor_table_protodef_proto_5fmsg_5fid_2eproto,
+    false, false, 148, descriptor_table_protodef_proto_5fmsg_5fid_2eproto,
     "proto_msg_id.proto",
     &descriptor_table_proto_5fmsg_5fid_2eproto_once, nullptr, 0, 0,
     schemas, file_default_instances, TableStruct_proto_5fmsg_5fid_2eproto::offsets,
@@ -57,7 +58,9 @@ bool MsgId_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
-    case 3:
+    case 1000:
+    case 1001:
+    case 1005:
       return true;
     default:
       return false;

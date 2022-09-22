@@ -10,8 +10,7 @@ Buffer::Buffer() {
 }
 
 Buffer::Buffer(size_t size) : size_(0), capacity_(size) {
-	buffer_ = (char*)malloc(size);
-    memset(buffer_, 0, capacity_);
+    buffer_ = new char[capacity_]{0};
 }
 
 void Buffer::ReAlloc(size_t size = 0) {

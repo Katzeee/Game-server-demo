@@ -6,6 +6,7 @@
 #include <list>
 #include <vector>
 #include "Thread.h"
+#include "NetworkBase.h"
 #include "ThreadObj.h"
 #include "Singleton.h"
 #include "IDisposable.h"
@@ -19,12 +20,15 @@ public:
     void StartAllThread();
     void NewThread();
     void AddObjToThread(ThreadObj* thread_obj);
+    void AddNetworkToThread(NetworkBase* network);
     void DispatchMessage(std::shared_ptr<Packet> packet);
+    void SendPacket(std::shared_ptr<Packet> packet);
     bool IsLoop();
 private:
     Thread* GetLeastObjThread();
     std::mutex lock_;
     std::vector<Thread*> threads_;
+    NetworkBase* network_;
 };
 
 } // end namespace xac

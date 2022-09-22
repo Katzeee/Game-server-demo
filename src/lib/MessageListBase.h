@@ -7,6 +7,7 @@
 #include <mutex>
 #include "IDisposable.h"
 #include "Packet.h"
+#include "protobuf/proto.h"
 namespace xac {
 
 class MessageListBase : public IDisposable {
@@ -17,9 +18,12 @@ public:
         message_list_.clear();
         callback_func_list_.clear();
     }
-    virtual void RegistCBFunc(int msg_id, CallBackFunc callback_func) = 0;
-    virtual bool IsConcernAbout(int msg_id) = 0;
-    void AddToMsgList(std::shared_ptr<Packet> packet) { message_list_.push_back(packet); }
+    virtual void RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func) = 0;
+    virtual bool IsConcernAbout(std::shared_ptr<Packet> packet) = 0;
+    void AddToMsgList(std::shared_ptr<Packet> packet) { 
+        auto guard = std::lock_guard(lock_);
+        message_list_.emplace_back(packet); 
+    }
     bool HaveMessage() { return !message_list_.empty(); }
     void HandleMessages() {
         std::list<std::shared_ptr<Packet>> tmp_message_list;

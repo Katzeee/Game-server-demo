@@ -71,11 +71,11 @@ bool ConnectObj::Receive() {
     }
     if (hasData) {
         while (true) {
-            const auto packet = read_buffer_->GetPacket();
+            const auto packet = read_buffer_->GetPacket(socket_fd_);
             if (packet == nullptr) {
                 break;
             }
-            std::cout << "dispatch one" << std::endl;
+            std::cout << "dispatch one from socket " << packet->GetSocket() << std::endl;
             ThreadManager::GetInstance()->DispatchMessage(packet);
         }
     }
@@ -109,14 +109,14 @@ ConnectObj::~ConnectObj() {
 }
 
 std::shared_ptr<Packet> ConnectObj::GetPacket() {
-    return read_buffer_->GetPacket();
+    return read_buffer_->GetPacket(socket_fd_);
 }
 
 void ConnectObj::SendPacket(std::shared_ptr<Packet> packet) {
     write_buffer_->AddPacket(packet);
 }
 
-std::shared_ptr<Packet> ReadBuffer::GetPacket() {
+std::shared_ptr<Packet> ReadBuffer::GetPacket(int socket_fd) {
     if (size_ < sizeof(uint16_t)) { // check whether enough length for data size
         return nullptr;
     }
@@ -130,7 +130,7 @@ std::shared_ptr<Packet> ReadBuffer::GetPacket() {
     MemcopyFromBuffer(reinterpret_cast<char*>(&head), sizeof(PacketHead));
     RemoveData(sizeof(PacketHead));
     // get packet
-    auto packet = std::make_shared<Packet>(head.msg_id_);
+    auto packet = std::make_shared<Packet>((Proto::MsgId)head.msg_id_, socket_fd);
     packet->ReAlloc(total_packet_size);
     char* buffer = (char*)malloc(total_packet_size);
     MemcopyFromBuffer(buffer, total_packet_size);

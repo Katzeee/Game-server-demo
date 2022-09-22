@@ -29,6 +29,7 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
@@ -45,15 +46,54 @@ struct TableStruct_msg_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_msg_2eproto;
 namespace Proto {
+class AccountCheck;
+struct AccountCheckDefaultTypeInternal;
+extern AccountCheckDefaultTypeInternal _AccountCheck_default_instance_;
+class AccountCheckRs;
+struct AccountCheckRsDefaultTypeInternal;
+extern AccountCheckRsDefaultTypeInternal _AccountCheckRs_default_instance_;
+class AccountCheckToHttpRs;
+struct AccountCheckToHttpRsDefaultTypeInternal;
+extern AccountCheckToHttpRsDefaultTypeInternal _AccountCheckToHttpRs_default_instance_;
 class TestMsg;
 struct TestMsgDefaultTypeInternal;
 extern TestMsgDefaultTypeInternal _TestMsg_default_instance_;
 }  // namespace Proto
 PROTOBUF_NAMESPACE_OPEN
+template<> ::Proto::AccountCheck* Arena::CreateMaybeMessage<::Proto::AccountCheck>(Arena*);
+template<> ::Proto::AccountCheckRs* Arena::CreateMaybeMessage<::Proto::AccountCheckRs>(Arena*);
+template<> ::Proto::AccountCheckToHttpRs* Arena::CreateMaybeMessage<::Proto::AccountCheckToHttpRs>(Arena*);
 template<> ::Proto::TestMsg* Arena::CreateMaybeMessage<::Proto::TestMsg>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace Proto {
 
+enum AccountCheckRs_ReturnCode : int {
+  AccountCheckRs_ReturnCode_ARC_OK = 0,
+  AccountCheckRs_ReturnCode_ARC_UNKNOWN = 1,
+  AccountCheckRs_ReturnCode_ARC_NOT_FOUND_ACCOUNT = 2,
+  AccountCheckRs_ReturnCode_ARC_PASSWORD_WRONG = 3,
+  AccountCheckRs_ReturnCode_AccountCheckRs_ReturnCode_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  AccountCheckRs_ReturnCode_AccountCheckRs_ReturnCode_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool AccountCheckRs_ReturnCode_IsValid(int value);
+constexpr AccountCheckRs_ReturnCode AccountCheckRs_ReturnCode_ReturnCode_MIN = AccountCheckRs_ReturnCode_ARC_OK;
+constexpr AccountCheckRs_ReturnCode AccountCheckRs_ReturnCode_ReturnCode_MAX = AccountCheckRs_ReturnCode_ARC_PASSWORD_WRONG;
+constexpr int AccountCheckRs_ReturnCode_ReturnCode_ARRAYSIZE = AccountCheckRs_ReturnCode_ReturnCode_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* AccountCheckRs_ReturnCode_descriptor();
+template<typename T>
+inline const std::string& AccountCheckRs_ReturnCode_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, AccountCheckRs_ReturnCode>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function AccountCheckRs_ReturnCode_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    AccountCheckRs_ReturnCode_descriptor(), enum_t_value);
+}
+inline bool AccountCheckRs_ReturnCode_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, AccountCheckRs_ReturnCode* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<AccountCheckRs_ReturnCode>(
+    AccountCheckRs_ReturnCode_descriptor(), name, value);
+}
 // ===================================================================
 
 class TestMsg final :
@@ -218,6 +258,521 @@ class TestMsg final :
   union { Impl_ _impl_; };
   friend struct ::TableStruct_msg_2eproto;
 };
+// -------------------------------------------------------------------
+
+class AccountCheck final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Proto.AccountCheck) */ {
+ public:
+  inline AccountCheck() : AccountCheck(nullptr) {}
+  ~AccountCheck() override;
+  explicit PROTOBUF_CONSTEXPR AccountCheck(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  AccountCheck(const AccountCheck& from);
+  AccountCheck(AccountCheck&& from) noexcept
+    : AccountCheck() {
+    *this = ::std::move(from);
+  }
+
+  inline AccountCheck& operator=(const AccountCheck& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AccountCheck& operator=(AccountCheck&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AccountCheck& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AccountCheck* internal_default_instance() {
+    return reinterpret_cast<const AccountCheck*>(
+               &_AccountCheck_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  friend void swap(AccountCheck& a, AccountCheck& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AccountCheck* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AccountCheck* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  AccountCheck* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<AccountCheck>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const AccountCheck& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const AccountCheck& from) {
+    AccountCheck::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AccountCheck* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Proto.AccountCheck";
+  }
+  protected:
+  explicit AccountCheck(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kAccountFieldNumber = 1,
+    kPasswordFieldNumber = 2,
+  };
+  // string account = 1;
+  void clear_account();
+  const std::string& account() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_account(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_account();
+  PROTOBUF_NODISCARD std::string* release_account();
+  void set_allocated_account(std::string* account);
+  private:
+  const std::string& _internal_account() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_account(const std::string& value);
+  std::string* _internal_mutable_account();
+  public:
+
+  // string password = 2;
+  void clear_password();
+  const std::string& password() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_password(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_password();
+  PROTOBUF_NODISCARD std::string* release_password();
+  void set_allocated_password(std::string* password);
+  private:
+  const std::string& _internal_password() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_password(const std::string& value);
+  std::string* _internal_mutable_password();
+  public:
+
+  // @@protoc_insertion_point(class_scope:Proto.AccountCheck)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr account_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr password_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_msg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class AccountCheckToHttpRs final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Proto.AccountCheckToHttpRs) */ {
+ public:
+  inline AccountCheckToHttpRs() : AccountCheckToHttpRs(nullptr) {}
+  ~AccountCheckToHttpRs() override;
+  explicit PROTOBUF_CONSTEXPR AccountCheckToHttpRs(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  AccountCheckToHttpRs(const AccountCheckToHttpRs& from);
+  AccountCheckToHttpRs(AccountCheckToHttpRs&& from) noexcept
+    : AccountCheckToHttpRs() {
+    *this = ::std::move(from);
+  }
+
+  inline AccountCheckToHttpRs& operator=(const AccountCheckToHttpRs& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AccountCheckToHttpRs& operator=(AccountCheckToHttpRs&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AccountCheckToHttpRs& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AccountCheckToHttpRs* internal_default_instance() {
+    return reinterpret_cast<const AccountCheckToHttpRs*>(
+               &_AccountCheckToHttpRs_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(AccountCheckToHttpRs& a, AccountCheckToHttpRs& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AccountCheckToHttpRs* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AccountCheckToHttpRs* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  AccountCheckToHttpRs* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<AccountCheckToHttpRs>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const AccountCheckToHttpRs& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const AccountCheckToHttpRs& from) {
+    AccountCheckToHttpRs::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AccountCheckToHttpRs* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Proto.AccountCheckToHttpRs";
+  }
+  protected:
+  explicit AccountCheckToHttpRs(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kAccountFieldNumber = 2,
+    kReturnCodeFieldNumber = 1,
+  };
+  // string account = 2;
+  void clear_account();
+  const std::string& account() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_account(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_account();
+  PROTOBUF_NODISCARD std::string* release_account();
+  void set_allocated_account(std::string* account);
+  private:
+  const std::string& _internal_account() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_account(const std::string& value);
+  std::string* _internal_mutable_account();
+  public:
+
+  // int32 return_code = 1;
+  void clear_return_code();
+  int32_t return_code() const;
+  void set_return_code(int32_t value);
+  private:
+  int32_t _internal_return_code() const;
+  void _internal_set_return_code(int32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:Proto.AccountCheckToHttpRs)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr account_;
+    int32_t return_code_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_msg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class AccountCheckRs final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Proto.AccountCheckRs) */ {
+ public:
+  inline AccountCheckRs() : AccountCheckRs(nullptr) {}
+  ~AccountCheckRs() override;
+  explicit PROTOBUF_CONSTEXPR AccountCheckRs(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  AccountCheckRs(const AccountCheckRs& from);
+  AccountCheckRs(AccountCheckRs&& from) noexcept
+    : AccountCheckRs() {
+    *this = ::std::move(from);
+  }
+
+  inline AccountCheckRs& operator=(const AccountCheckRs& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AccountCheckRs& operator=(AccountCheckRs&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AccountCheckRs& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AccountCheckRs* internal_default_instance() {
+    return reinterpret_cast<const AccountCheckRs*>(
+               &_AccountCheckRs_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(AccountCheckRs& a, AccountCheckRs& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AccountCheckRs* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AccountCheckRs* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  AccountCheckRs* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<AccountCheckRs>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const AccountCheckRs& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const AccountCheckRs& from) {
+    AccountCheckRs::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AccountCheckRs* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Proto.AccountCheckRs";
+  }
+  protected:
+  explicit AccountCheckRs(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  typedef AccountCheckRs_ReturnCode ReturnCode;
+  static constexpr ReturnCode ARC_OK =
+    AccountCheckRs_ReturnCode_ARC_OK;
+  static constexpr ReturnCode ARC_UNKNOWN =
+    AccountCheckRs_ReturnCode_ARC_UNKNOWN;
+  static constexpr ReturnCode ARC_NOT_FOUND_ACCOUNT =
+    AccountCheckRs_ReturnCode_ARC_NOT_FOUND_ACCOUNT;
+  static constexpr ReturnCode ARC_PASSWORD_WRONG =
+    AccountCheckRs_ReturnCode_ARC_PASSWORD_WRONG;
+  static inline bool ReturnCode_IsValid(int value) {
+    return AccountCheckRs_ReturnCode_IsValid(value);
+  }
+  static constexpr ReturnCode ReturnCode_MIN =
+    AccountCheckRs_ReturnCode_ReturnCode_MIN;
+  static constexpr ReturnCode ReturnCode_MAX =
+    AccountCheckRs_ReturnCode_ReturnCode_MAX;
+  static constexpr int ReturnCode_ARRAYSIZE =
+    AccountCheckRs_ReturnCode_ReturnCode_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+  ReturnCode_descriptor() {
+    return AccountCheckRs_ReturnCode_descriptor();
+  }
+  template<typename T>
+  static inline const std::string& ReturnCode_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, ReturnCode>::value ||
+      ::std::is_integral<T>::value,
+      "Incorrect type passed to function ReturnCode_Name.");
+    return AccountCheckRs_ReturnCode_Name(enum_t_value);
+  }
+  static inline bool ReturnCode_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      ReturnCode* value) {
+    return AccountCheckRs_ReturnCode_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kReturnCodeFieldNumber = 1,
+  };
+  // int32 return_code = 1;
+  void clear_return_code();
+  int32_t return_code() const;
+  void set_return_code(int32_t value);
+  private:
+  int32_t _internal_return_code() const;
+  void _internal_set_return_code(int32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:Proto.AccountCheckRs)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    int32_t return_code_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_msg_2eproto;
+};
 // ===================================================================
 
 
@@ -299,13 +854,231 @@ inline void TestMsg::set_index(int32_t value) {
   // @@protoc_insertion_point(field_set:Proto.TestMsg.index)
 }
 
+// -------------------------------------------------------------------
+
+// AccountCheck
+
+// string account = 1;
+inline void AccountCheck::clear_account() {
+  _impl_.account_.ClearToEmpty();
+}
+inline const std::string& AccountCheck::account() const {
+  // @@protoc_insertion_point(field_get:Proto.AccountCheck.account)
+  return _internal_account();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AccountCheck::set_account(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.account_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:Proto.AccountCheck.account)
+}
+inline std::string* AccountCheck::mutable_account() {
+  std::string* _s = _internal_mutable_account();
+  // @@protoc_insertion_point(field_mutable:Proto.AccountCheck.account)
+  return _s;
+}
+inline const std::string& AccountCheck::_internal_account() const {
+  return _impl_.account_.Get();
+}
+inline void AccountCheck::_internal_set_account(const std::string& value) {
+  
+  _impl_.account_.Set(value, GetArenaForAllocation());
+}
+inline std::string* AccountCheck::_internal_mutable_account() {
+  
+  return _impl_.account_.Mutable(GetArenaForAllocation());
+}
+inline std::string* AccountCheck::release_account() {
+  // @@protoc_insertion_point(field_release:Proto.AccountCheck.account)
+  return _impl_.account_.Release();
+}
+inline void AccountCheck::set_allocated_account(std::string* account) {
+  if (account != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.account_.SetAllocated(account, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.account_.IsDefault()) {
+    _impl_.account_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:Proto.AccountCheck.account)
+}
+
+// string password = 2;
+inline void AccountCheck::clear_password() {
+  _impl_.password_.ClearToEmpty();
+}
+inline const std::string& AccountCheck::password() const {
+  // @@protoc_insertion_point(field_get:Proto.AccountCheck.password)
+  return _internal_password();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AccountCheck::set_password(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.password_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:Proto.AccountCheck.password)
+}
+inline std::string* AccountCheck::mutable_password() {
+  std::string* _s = _internal_mutable_password();
+  // @@protoc_insertion_point(field_mutable:Proto.AccountCheck.password)
+  return _s;
+}
+inline const std::string& AccountCheck::_internal_password() const {
+  return _impl_.password_.Get();
+}
+inline void AccountCheck::_internal_set_password(const std::string& value) {
+  
+  _impl_.password_.Set(value, GetArenaForAllocation());
+}
+inline std::string* AccountCheck::_internal_mutable_password() {
+  
+  return _impl_.password_.Mutable(GetArenaForAllocation());
+}
+inline std::string* AccountCheck::release_password() {
+  // @@protoc_insertion_point(field_release:Proto.AccountCheck.password)
+  return _impl_.password_.Release();
+}
+inline void AccountCheck::set_allocated_password(std::string* password) {
+  if (password != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.password_.SetAllocated(password, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.password_.IsDefault()) {
+    _impl_.password_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:Proto.AccountCheck.password)
+}
+
+// -------------------------------------------------------------------
+
+// AccountCheckToHttpRs
+
+// int32 return_code = 1;
+inline void AccountCheckToHttpRs::clear_return_code() {
+  _impl_.return_code_ = 0;
+}
+inline int32_t AccountCheckToHttpRs::_internal_return_code() const {
+  return _impl_.return_code_;
+}
+inline int32_t AccountCheckToHttpRs::return_code() const {
+  // @@protoc_insertion_point(field_get:Proto.AccountCheckToHttpRs.return_code)
+  return _internal_return_code();
+}
+inline void AccountCheckToHttpRs::_internal_set_return_code(int32_t value) {
+  
+  _impl_.return_code_ = value;
+}
+inline void AccountCheckToHttpRs::set_return_code(int32_t value) {
+  _internal_set_return_code(value);
+  // @@protoc_insertion_point(field_set:Proto.AccountCheckToHttpRs.return_code)
+}
+
+// string account = 2;
+inline void AccountCheckToHttpRs::clear_account() {
+  _impl_.account_.ClearToEmpty();
+}
+inline const std::string& AccountCheckToHttpRs::account() const {
+  // @@protoc_insertion_point(field_get:Proto.AccountCheckToHttpRs.account)
+  return _internal_account();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AccountCheckToHttpRs::set_account(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.account_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:Proto.AccountCheckToHttpRs.account)
+}
+inline std::string* AccountCheckToHttpRs::mutable_account() {
+  std::string* _s = _internal_mutable_account();
+  // @@protoc_insertion_point(field_mutable:Proto.AccountCheckToHttpRs.account)
+  return _s;
+}
+inline const std::string& AccountCheckToHttpRs::_internal_account() const {
+  return _impl_.account_.Get();
+}
+inline void AccountCheckToHttpRs::_internal_set_account(const std::string& value) {
+  
+  _impl_.account_.Set(value, GetArenaForAllocation());
+}
+inline std::string* AccountCheckToHttpRs::_internal_mutable_account() {
+  
+  return _impl_.account_.Mutable(GetArenaForAllocation());
+}
+inline std::string* AccountCheckToHttpRs::release_account() {
+  // @@protoc_insertion_point(field_release:Proto.AccountCheckToHttpRs.account)
+  return _impl_.account_.Release();
+}
+inline void AccountCheckToHttpRs::set_allocated_account(std::string* account) {
+  if (account != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.account_.SetAllocated(account, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.account_.IsDefault()) {
+    _impl_.account_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:Proto.AccountCheckToHttpRs.account)
+}
+
+// -------------------------------------------------------------------
+
+// AccountCheckRs
+
+// int32 return_code = 1;
+inline void AccountCheckRs::clear_return_code() {
+  _impl_.return_code_ = 0;
+}
+inline int32_t AccountCheckRs::_internal_return_code() const {
+  return _impl_.return_code_;
+}
+inline int32_t AccountCheckRs::return_code() const {
+  // @@protoc_insertion_point(field_get:Proto.AccountCheckRs.return_code)
+  return _internal_return_code();
+}
+inline void AccountCheckRs::_internal_set_return_code(int32_t value) {
+  
+  _impl_.return_code_ = value;
+}
+inline void AccountCheckRs::set_return_code(int32_t value) {
+  _internal_set_return_code(value);
+  // @@protoc_insertion_point(field_set:Proto.AccountCheckRs.return_code)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace Proto
+
+PROTOBUF_NAMESPACE_OPEN
+
+template <> struct is_proto_enum< ::Proto::AccountCheckRs_ReturnCode> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Proto::AccountCheckRs_ReturnCode>() {
+  return ::Proto::AccountCheckRs_ReturnCode_descriptor();
+}
+
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
 

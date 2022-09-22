@@ -10,6 +10,7 @@ public:
     ~Server() {}
     void Update() override;
     void DataHandler();
+    int GetSocket() { return master_socket_fd_; }
 private:
     bool is_running_;
 };

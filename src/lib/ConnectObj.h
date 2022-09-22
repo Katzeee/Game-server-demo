@@ -15,7 +15,7 @@ public:
 
 class ReadBuffer : public RingBuffer {
 public:
-    std::shared_ptr<Packet> GetPacket();
+    std::shared_ptr<Packet> GetPacket(int socket_fd);
 };
 
 

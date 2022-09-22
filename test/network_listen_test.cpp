@@ -8,7 +8,7 @@ int main() {
     server->Update();
     auto i = 100;
     while(i--) {
-        new Packet(100);
+        new Packet((Proto::MsgId)100, server->GetSocket());
     }
     return 0;
 }

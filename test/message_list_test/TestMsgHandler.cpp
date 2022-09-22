@@ -5,15 +5,17 @@ using namespace xac;
 
 class TestMsgHandler : public ThreadObj {
 public:
-    void HandleTestMsg(std::shared_ptr<Packet> packet) {
-
-    }
 
     void Init() override {
         message_list_ = std::make_shared<MessageListHandleAll>();
         message_list_->RegistCBFunc(Proto::MI_TestMsg, [](std::shared_ptr<Packet> packet) {
             auto proto = packet->ParseToProto<Proto::TestMsg>();
-            std::cout << "id: " << proto.index() << ", msg: " <<  proto.msg() << std::endl;
+            std::cout << "index: " << proto.index() << ", msg: " <<  proto.msg()  << ", socket: " << packet->GetSocket() << std::endl;
+            Proto::AccountCheckRs proto_rs;
+            proto_rs.set_return_code(Proto::AccountCheckRs_ReturnCode_ARC_UNKNOWN);
+            auto packet_rs = std::make_shared<Packet>(Proto::C2L_AccountCheckRs, packet->GetSocket());
+            packet_rs->SerializeToBuffer(proto_rs);
+            ThreadManager::GetInstance()->SendPacket(packet_rs);
         });
     }
     void Update() override {
@@ -30,13 +32,14 @@ public:
         thread_manager_ = ThreadManager::GetInstance();
         auto network_listener = new NetworkListener();
         network_listener->Listen("127.0.0.1", 2233);
-        thread_manager_->AddObjToThread(network_listener);
+        thread_manager_->AddNetworkToThread(network_listener);
     }
     ~MsgTestApp() override { Dispose(); }
     void InitApp() override {
         auto test_msg_handler = new TestMsgHandler();
         test_msg_handler->Init();
         thread_manager_->AddObjToThread(test_msg_handler);
+        //thread_manager_->AddObjToThread(test_msg_handler);
     }
     void Dispose() override {}
     void StartAllThread() override {

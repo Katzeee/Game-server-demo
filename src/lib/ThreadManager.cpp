@@ -36,6 +36,11 @@ void ThreadManager::AddObjToThread(ThreadObj* thread_obj) {
     lock_.unlock();
 }
 
+void ThreadManager::AddNetworkToThread(NetworkBase* network) {
+    AddObjToThread(network);
+    network_ = network;
+}
+
 bool ThreadManager::IsLoop() {
     lock_.lock();
     for (auto it : threads_)  {
@@ -52,6 +57,13 @@ void ThreadManager::DispatchMessage(std::shared_ptr<Packet> packet) {
     for (auto it : threads_) {
         it->DispatchMessage(packet);
     }
+}
+
+void ThreadManager::SendPacket(std::shared_ptr<Packet> packet) {
+    if (!network_) {
+        assert(0);
+    }
+    network_->SendPacket(packet);
 }
 
 Thread* ThreadManager::GetLeastObjThread() {

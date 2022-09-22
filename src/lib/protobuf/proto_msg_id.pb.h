@@ -50,13 +50,15 @@ namespace Proto {
 enum MsgId : int {
   None = 0,
   MI_TestMsg = 1,
-  MI_RecvData = 3,
+  C2L_AccountCheck = 1000,
+  C2L_AccountCheckRs = 1001,
+  MI_AccountCheckToHttpRs = 1005,
   MsgId_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   MsgId_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool MsgId_IsValid(int value);
 constexpr MsgId MsgId_MIN = None;
-constexpr MsgId MsgId_MAX = MI_RecvData;
+constexpr MsgId MsgId_MAX = MI_AccountCheckToHttpRs;
 constexpr int MsgId_ARRAYSIZE = MsgId_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MsgId_descriptor();

@@ -62,6 +62,29 @@ bool NetworkBase::Select() {
     return true;
 }
 
+void NetworkBase::SendPacket(std::shared_ptr<Packet> packet) {
+    auto guard = std::lock_guard(lock_);
+    //lock_.try_lock();
+    send_msg_list_.emplace_back(packet);
+}
+
+
+void NetworkBase::Update() {
+    std::list<std::shared_ptr<Packet>> tmp_list;
+    if (send_msg_list_.empty()) {
+        return;
+    }
+    lock_.lock();
+    tmp_list.swap(send_msg_list_);
+    lock_.unlock();
+    for (auto it : tmp_list) {
+        auto connect = connects_.find(it->GetSocket());
+        if (connect != connects_.end()) {
+            connect->second->SendPacket(it);
+        }
+    }
+}
+
 
 void NetworkBase::SetSocketOpt(int socket) {
     // once the port closed, reuse it

@@ -27,19 +27,22 @@ bool NetworkConnecter::Connect(std::string ip_addr, uint16_t port) {
 }
 
 void NetworkConnecter::Update() {
-    auto i = 2;
-    while (i--) {
-        auto packet = std::make_shared<Packet>(Proto::MsgId::MI_TestMsg);
+
+
+    Select();
+
+    if (i > 1) {
+        i--;
+        auto packet = std::make_shared<Packet>(Proto::MsgId::MI_TestMsg, master_socket_fd_);
         Proto::TestMsg test_msg;
         test_msg.set_index(i);
         test_msg.set_msg("sssss");
         packet->SerializeToBuffer(test_msg);
-        for (auto it : connects_) {
-            it.second->SendPacket(packet);
-            std::cout << "send msgid: " << packet->GetMsgId() << " msg_index: " << i << std::endl;
-        }
-        Select();
+        SendPacket(packet);
+        std::cout << "send msgid: " << packet->GetMsgId() << " msg_index: " << i  << ", socket: " << master_socket_fd_ << std::endl;
     }
+    NetworkBase::Update();
+    
 }
 
 } // end namespace xac

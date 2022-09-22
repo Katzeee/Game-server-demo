@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 
 namespace xac {
-class NetworkListener : public NetworkBase , public ThreadObj {
+class NetworkListener : public NetworkBase {
 public:
     void Init() override {}
     void Update() override;

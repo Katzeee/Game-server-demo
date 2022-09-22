@@ -23,6 +23,7 @@ bool NetworkListener::Listen(std::string ip_addr, uint16_t port) {
     if (::bind(master_socket_fd_, (sockaddr*)&sock_addr, sizeof(sockaddr)) < 0) {
         // TODO:LOG
         std::cout << "bind error" << std::endl;
+        assert(0);
         return false;
     }
     int back_log = 10;
@@ -60,6 +61,7 @@ void NetworkListener::Update() {
         Accept();
     }
     Select();
+    NetworkBase::Update();
     // for (auto it : connects_) {
     //     if (it.second->HasRecvData()) {
     //         auto packet = it.second->GetPacket();

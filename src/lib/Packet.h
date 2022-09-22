@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Buffer.h"
+#include "protobuf/proto.h"
 
 namespace xac {
 
@@ -17,10 +18,11 @@ struct PacketHead {
 class Packet : public NormalBuffer {
 public:
     Packet() = delete;
-    Packet(uint16_t msg_id) : msg_id_(msg_id) { 
+    Packet(Proto::MsgId msg_id, int socket_fd) : msg_id_(msg_id), socket_fd_(socket_fd) { 
         //std:: cout << "new packet" << std::endl; 
     }
     uint16_t GetMsgId() { return msg_id_; }
+    int GetSocket() { return socket_fd_; }
     void SetMessageData(char* src, size_t size);
     void SetMessageData(std::string src);
     ~Packet() { 
@@ -31,7 +33,6 @@ public:
     ProtoClass ParseToProto() {
         ProtoClass proto;
         proto.ParsePartialFromArray(GetBufferStartAddr(), GetSize());
-        RemoveData(GetSize());
         return proto;
     }
     template<typename ProtoClass>
@@ -42,7 +43,8 @@ public:
         FillData(total_size);
     }
 protected:
-    uint16_t msg_id_;
+    Proto::MsgId msg_id_;
+    int socket_fd_;
 };
 
 }
