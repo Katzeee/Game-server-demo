@@ -7,8 +7,8 @@ class TestMsgHandler : public ThreadObj {
 public:
 
     void Init() override {
-        message_list_ = std::make_shared<MessageListHandleAll>();
-        message_list_->RegistCBFunc(Proto::MI_TestMsg, [](std::shared_ptr<Packet> packet) {
+        auto message_list = std::make_shared<MessageList>();
+        message_list->RegistCBFunc(Proto::MI_TestMsg, [](std::shared_ptr<Packet> packet) {
             auto proto = packet->ParseToProto<Proto::TestMsg>();
             std::cout << "index: " << proto.index() << ", msg: " <<  proto.msg()  << ", socket: " << packet->GetSocket() << std::endl;
             Proto::AccountCheckRs proto_rs;
@@ -17,6 +17,7 @@ public:
             packet_rs->SerializeToBuffer(proto_rs);
             ThreadManager::GetInstance()->SendPacket(packet_rs);
         });
+        message_list_ = message_list;
     }
     void Update() override {
         if (message_list_->HaveMessage()) {

@@ -3,11 +3,11 @@
 
 namespace xac {
 
-void MessageListHandleAll::Dispose() {
+void MessageList::Dispose() {
 
 }
 
-void MessageListHandleAll::RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func) {
+void MessageList::RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func) {
     if (callback_func_list_.find(msg_id) != callback_func_list_.end()) {
         std::cout << "Func exist! Modify it use another function!" << std::endl;
         return;
@@ -16,7 +16,7 @@ void MessageListHandleAll::RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callba
 }
 
 
-bool MessageListHandleAll::IsConcernAbout(std::shared_ptr<Packet> packet) {
+bool MessageList::IsConcernAbout(std::shared_ptr<Packet> packet) {
     if (callback_func_list_.find(packet->GetMsgId()) != callback_func_list_.end()) {
         return true;
     }
@@ -24,30 +24,47 @@ bool MessageListHandleAll::IsConcernAbout(std::shared_ptr<Packet> packet) {
 }
 
 
-void MessageListHandleFiltered::Dispose() {
+void MessageList::HandleMessages() {
+    std::list<std::shared_ptr<Packet>> tmp_message_list;
+    lock_.lock();
+    std::swap(message_list_, tmp_message_list);
+    lock_.unlock();
+    for (auto it : tmp_message_list) {
+        callback_func_list_.find(it->GetMsgId())->second(it);
+    }
+}
+
+void MessageListWithFilter::Dispose() {
 
 }
 
-void MessageListHandleFiltered::RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func) {
+void MessageListWithFilter::RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func, FilterFunc filter_func = nullptr) {
     if (callback_func_list_.find(msg_id) != callback_func_list_.end()) {
         std::cout << "Func exist! Modify it use another function!" << std::endl;
         return;
     }
-    callback_func_list_.insert(std::pair(msg_id, callback_func));
+    callback_func_list_.insert(std::pair(msg_id, std::pair(filter_func, callback_func)));
 }
 
-bool MessageListHandleFiltered::IsConcernAbout(std::shared_ptr<Packet> packet) {
-    if (!filter_function_) {
+bool MessageListWithFilter::IsConcernAbout(std::shared_ptr<Packet> packet) {
+    auto call_back_pair = callback_func_list_.find(packet->GetMsgId());
+    if (call_back_pair == callback_func_list_.end()) {
         return false;
     }
-    if (filter_function_(packet)) {
-        return MessageListHandleAll::IsConcernAbout(packet);
+    if (call_back_pair->second.first == nullptr) {
+        return true;
     }
-    return false;
+    return call_back_pair->second.first(packet);
 }
 
-void MessageListHandleFiltered::SetFilterFunc(std::function<bool(std::shared_ptr<Packet>)> filter_function) {
-    filter_function_ = filter_function;
+void MessageListWithFilter::HandleMessages() {
+    std::list<std::shared_ptr<Packet>> tmp_message_list;
+    lock_.lock();
+    std::swap(message_list_, tmp_message_list);
+    lock_.unlock();
+    for (auto it : tmp_message_list) {
+        callback_func_list_.find(it->GetMsgId())->second.second(it);
+    }
 }
 
 } // end namespace xac

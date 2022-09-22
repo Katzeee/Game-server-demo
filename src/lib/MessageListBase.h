@@ -13,31 +13,15 @@ namespace xac {
 class MessageListBase : public IDisposable {
 public:
     using CallBackFunc = std::function<void(std::shared_ptr<Packet>)>;
-    // virtual void Init() = 0;
-    MessageListBase() {
-        message_list_.clear();
-        callback_func_list_.clear();
-    }
-    virtual void RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func) = 0;
+    MessageListBase() = default;
+    // virtual void RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func) = 0;
     virtual bool IsConcernAbout(std::shared_ptr<Packet> packet) = 0;
-    void AddToMsgList(std::shared_ptr<Packet> packet) { 
-        auto guard = std::lock_guard(lock_);
-        message_list_.emplace_back(packet); 
-    }
-    bool HaveMessage() { return !message_list_.empty(); }
-    void HandleMessages() {
-        std::list<std::shared_ptr<Packet>> tmp_message_list;
-        lock_.lock();
-        std::swap(message_list_, tmp_message_list);
-        lock_.unlock();
-        for (auto it : tmp_message_list) {
-            callback_func_list_.find(it->GetMsgId())->second(it);
-        }
-    }
+    virtual void HandleMessages() = 0;
+    void AddToMsgList(std::shared_ptr<Packet> packet); 
+    bool HaveMessage(); 
 protected:
     std::mutex lock_;
     std::list<std::shared_ptr<Packet>> message_list_{};
-    std::map<int, CallBackFunc> callback_func_list_{};
 };
 
 } // end namespace xac

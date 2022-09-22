@@ -4,21 +4,25 @@
 #include "MessageListBase.h"
 
 namespace xac {
-class MessageListHandleAll : public MessageListBase {
+class MessageList : public MessageListBase {
 public:
     void Dispose() override;
     // void Init() override;
-    void RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func) override;
+    void RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func);
+    void HandleMessages() override;
     bool IsConcernAbout(std::shared_ptr<Packet> packet) override;
+protected:
+    std::map<int, CallBackFunc> callback_func_list_{};
 };    
 
-class MessageListHandleFiltered : public MessageListHandleAll {
+class MessageListWithFilter : public MessageListBase {
 public:
+    using FilterFunc = std::function<bool(std::shared_ptr<Packet>)>;
     void Dispose() override;
-    void RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func) override;
+    void HandleMessages() override;
     bool IsConcernAbout(std::shared_ptr<Packet> packet) override;
-    void SetFilterFunc(std::function<bool(std::shared_ptr<Packet>)> filter_function);
+    void RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func, FilterFunc filter_func);
 protected:
-    std::function<bool(std::shared_ptr<Packet>)> filter_function_{ nullptr };
+    std::map<int, std::pair<FilterFunc ,CallBackFunc>> callback_func_list_{};
 };
 } // end namespace xac

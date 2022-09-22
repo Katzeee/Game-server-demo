@@ -6,14 +6,14 @@ class Robot : public NetworkConnecter {
 public:
     Robot() {
         ThreadManager::Instance();
-        auto message_list = std::make_shared<MessageListHandleFiltered>();
+        auto message_list = std::make_shared<MessageListWithFilter>();
+        auto filter_func = [this](std::shared_ptr<Packet> packet){
+            return this->master_socket_fd_ == packet->GetSocket();
+        };
         message_list->RegistCBFunc(Proto::C2L_AccountCheckRs, [](std::shared_ptr<Packet> pakcet){
             auto proto = pakcet->ParseToProto<Proto::AccountCheckRs>();
             std::cout << "rs code: " << proto.return_code() << std::endl;
-        });
-        message_list->SetFilterFunc([this](std::shared_ptr<Packet> packet){
-            return this->master_socket_fd_ == packet->GetSocket();
-        });
+        }, filter_func);
         message_list_ = message_list;
     }
 
