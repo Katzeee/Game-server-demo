@@ -1,5 +1,4 @@
-#include "../src/ThreadManager.h"
-#include "../src/ThreadObj.h"
+#include "../src/libserver.h"
 
 using namespace xac;
 

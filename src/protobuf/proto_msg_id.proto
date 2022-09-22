@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package Proto;
-
-enum MsgId {
-    None = 0;
-    MI_TestMsg = 1;
-    MI_RecvData = 3;
-}

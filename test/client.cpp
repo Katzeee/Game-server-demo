@@ -2,7 +2,7 @@
 #include <arpa/inet.h>
 #include <memory.h>
 #include <string>
-#include "../src/Packet.h"
+#include "../src/libserver.h"
 using namespace xac;
 
 int main() {

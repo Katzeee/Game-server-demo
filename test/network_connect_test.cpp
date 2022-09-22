@@ -1,7 +1,6 @@
 #include <thread>
 #include <unistd.h>
-#include "../src/NetworkConnecter.h"
-#include "../src/ThreadManager.h"
+#include "../src/libserver.h"
 
 using namespace xac;
 

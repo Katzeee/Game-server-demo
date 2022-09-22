@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include "../src/Buffer.h"
+#include "../src/libserver.h"
 using namespace xac;
 
 int main() {

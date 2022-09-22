@@ -1,8 +1,5 @@
 #include <iostream>
-#include "../src/Server.h"
-#include "../src/NetworkListener.h"
-#include "../src/Buffer.h"
-#include "../src/ConnectObj.h"
+#include "../src/libserver.h"
 using namespace xac;
 
 int main() {

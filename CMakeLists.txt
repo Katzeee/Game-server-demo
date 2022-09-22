@@ -16,12 +16,13 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 find_package(Protobuf REQUIRED)
 find_package(CURL REQUIRED)
-set(link_libs ${CURL_LIBRARIES} ${PROTOBUF_LIBRARIES})
+#find_package(jsoncpp REQUIRED)
+set(link_libs ${CURL_LIBRARIES} ${PROTOBUF_LIBRARIES} jsoncpp)
 
 # source files 
 
-aux_source_directory(src LIB_SRC)
-file(GLOB proto_files CONFIG_DEPENDS src/protobuf/*.proto)
+aux_source_directory(src/lib LIB_SRC)
+file(GLOB proto_files CONFIG_DEPENDS src/lib/protobuf/*.proto)
 PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS ${proto_files})
 
 

@@ -1,8 +1,4 @@
-#include "../../src/ThreadObj.h"
-#include "../../src/ServerApp.h"
-#include "../../src/MessageList.h"
-#include "../../src/NetworkListener.h"
-#include "../../src/protobuf/proto.h"
+#include "../../src/libserver.h"
 
 using namespace xac;
 
