@@ -7,13 +7,13 @@
 
 namespace xac {
 
-class ReadBuffer;
-class WriteBuffer : public RingBuffer {
+class RecvBuffer;
+class SendBuffer : public RingBuffer {
 public:
     void AddPacket(std::shared_ptr<Packet> packet);
 };
 
-class ReadBuffer : public RingBuffer {
+class RecvBuffer : public RingBuffer {
 public:
     std::shared_ptr<Packet> GetPacket(int socket_fd);
 };
@@ -34,8 +34,8 @@ public:
 
 protected:
     const int socket_fd_;
-    ReadBuffer* read_buffer_{ nullptr };
-    WriteBuffer* write_buffer_{ nullptr };
+    RecvBuffer* read_buffer_{ nullptr };
+    SendBuffer* write_buffer_{ nullptr };
 };
 
 }

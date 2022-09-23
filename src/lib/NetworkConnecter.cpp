@@ -1,5 +1,6 @@
 #include <string>
 #include <cstring>
+#include <sys/select.h>
 #include "NetworkConnecter.h"
 
 namespace xac {
@@ -9,22 +10,23 @@ bool NetworkConnecter::Connect() {
 }
 
 bool NetworkConnecter::Connect(std::string ip_addr, uint16_t port) {
-    master_socket_fd_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (master_socket_fd_ <= 0) {
-        std::cout << "socket error" << std::endl;
-        return false;
+    if (master_socket_fd_ == -1) {
+        if (!CreateSocket()) {
+            return false;
+        }
     }
     sockaddr_in sockaddr_struct;
     memset(&sockaddr_struct, 0, sizeof(sockaddr_in));
     sockaddr_struct.sin_addr.s_addr = inet_addr(ip_addr.c_str());
     sockaddr_struct.sin_family = AF_INET;
     sockaddr_struct.sin_port = htons(port);
+    // TODO: connect before listen?
     if (connect(master_socket_fd_, (sockaddr*)&sockaddr_struct, sizeof(sockaddr_struct)) < 0) {
-        std::cout << "connect error" << std::endl;
+        std::cout << "connect error: " << errno << std::endl;
         return false;
     }
-    SetNonBlock(master_socket_fd_);
-    ConnectObj* connect_obj = new ConnectObj(master_socket_fd_);
+    SetSocketOpt(master_socket_fd_);
+    auto connect_obj = std::make_shared<ConnectObj>(master_socket_fd_);
     connects_.insert(std::pair(master_socket_fd_, connect_obj));
     ip_addr_ = ip_addr;
     port_ = port;
@@ -33,12 +35,8 @@ bool NetworkConnecter::Connect(std::string ip_addr, uint16_t port) {
 
 void NetworkConnecter::Update() {
 
-    if (master_socket_fd_ == -1) {
-        if (!Connect()) {
-            return;
-        }
-
-        std::cout << "Re connect" << std::endl;
+    if (connects_.size() < 1) {
+        Reconnect();
     }
 
     Select();
@@ -55,6 +53,17 @@ void NetworkConnecter::Update() {
     }
     NetworkBase::Update();
     
+}
+
+void NetworkConnecter::Reconnect() {
+    master_socket_fd_ = -1;
+    while (!Connect()); 
+    auto packet = std::make_shared<Packet>(Proto::MsgId::MI_TestMsg, master_socket_fd_);
+    Proto::TestMsg test_msg;
+    test_msg.set_index(i);
+    test_msg.set_msg("reconnect");
+    packet->SerializeToBuffer(test_msg);
+    SendPacket(packet);
 }
 
 } // end namespace xac

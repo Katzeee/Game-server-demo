@@ -20,11 +20,11 @@ bool NetworkBase::Select() {
         FD_SET(it->first, &except_fds_);
         if (it->second->HasSendData()) {
             FD_SET(it->first, &write_fds_);
-        } else {
+        } /*else {
             if (it->first == master_socket_fd_) {
                 FD_CLR(master_socket_fd_, &write_fds_);
             }
-        }
+        }*/
     }
     timeval timeout;
     memset(&timeout, 0, sizeof(timeval));
@@ -36,20 +36,17 @@ bool NetworkBase::Select() {
     for (auto it = connects_.begin(); it != connects_.end(); ) {
         if (FD_ISSET(it->first, &except_fds_)) { // if fd has exception, close the connection
             std::cout << "except " << it->first << std::endl;
-            delete it->second;
             it = connects_.erase(it);
             continue;
         }
         if (FD_ISSET(it->first, &read_fds_)) {
             if (!it->second->Receive()) {
-                delete it->second;
                 it = connects_.erase(it);
                 continue;
             }
         }
         if (FD_ISSET(it->first, &write_fds_)) {
             if (!it->second->Send()) {
-                delete it->second;
                 it = connects_.erase(it);
                 continue;
             }
@@ -83,6 +80,15 @@ void NetworkBase::Update() {
 }
 
 
+bool NetworkBase::CreateSocket() {
+    master_socket_fd_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (master_socket_fd_ <= 0) {
+        std::cout << "socket fail: " << errno <<  std::endl;
+        return false;
+    }
+    return true;
+}
+
 void NetworkBase::SetSocketOpt(int socket) {
     // once the port closed, reuse it
     bool is_reuse_addr = true;
@@ -93,13 +99,13 @@ void NetworkBase::SetSocketOpt(int socket) {
     setsockopt(socket, SOL_SOCKET, SO_SNDTIMEO, (void*)&net_timeout, sizeof(net_timeout));
     setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (void*)&net_timeout, sizeof(net_timeout));
 
+    // keep alive
     int keep_alive = 1;
     socklen_t opt_len = sizeof(keep_alive);
     int keep_idle = 60 * 2;
     int keep_interval = 10;
     int keep_count = 5;
 
-    // keep alive
     setsockopt(socket, SOL_SOCKET, SO_KEEPALIVE, (void*)&keep_alive, opt_len);
     if (getsockopt(socket, SOL_SOCKET, SO_KEEPALIVE, &keep_alive, &opt_len) < 0) {
         std::cout << "getsocketopt Keep alive failed" << std::endl;
@@ -123,9 +129,7 @@ void NetworkBase::SetNonBlock(int socket) {
 }
 
 NetworkBase::~NetworkBase() {
-    for (auto it : connects_) {
-        delete it.second;
-    }
+    connects_.clear();
 }
 
 } // end namespace xac

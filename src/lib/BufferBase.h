@@ -24,6 +24,7 @@ protected:
 public:
 	BufferBase();
 	BufferBase(size_t size);
+	virtual ~BufferBase();
 	size_t GetSize();
 	size_t GetCapacity();
 	virtual void ReAlloc(size_t size);
@@ -34,13 +35,13 @@ public:
     virtual bool RemoveData(size_t size);
     virtual char* GetBufferEndAddr();
     virtual char* GetBufferStartAddr();
-	virtual ~BufferBase();
 };
 
 class RingBuffer : public BufferBase {
 public:
     RingBuffer() : BufferBase() {}
     RingBuffer(size_t size) : BufferBase(size) {}
+    virtual ~RingBuffer() = default;
     bool MemcopyFromBuffer(char* des, size_t size) override;
     bool MemcopyToBuffer(char* src, size_t size) override;
     bool RemoveData(size_t size) override;
@@ -50,13 +51,9 @@ public:
 
 class NormalBuffer : public BufferBase {
 public:
-    NormalBuffer() : BufferBase() { 
-    //    std::cout << "Normal buffer" << std::endl; 
-    }
+    NormalBuffer() : BufferBase() {}
     NormalBuffer(size_t size) : BufferBase(size) {}
-    // ~NormalBuffer() { BufferBase::~BufferBase(); }
-    // void MemcopyFromBuffer(char* des, size_t size) { BufferBase::MemcopyFromBuffer(des, size); }
-    // void MemcopyToBuffer(char* src, size_t size) { BufferBase::MemcopyToBuffer(src, size); }
+    virtual ~NormalBuffer() = default;
 };
 
 

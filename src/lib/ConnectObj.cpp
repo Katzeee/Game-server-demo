@@ -8,12 +8,15 @@
 namespace xac {
 
 ConnectObj::ConnectObj(int socket_fd) : socket_fd_(socket_fd) {
-    read_buffer_ = new ReadBuffer();
-    write_buffer_ = new WriteBuffer();
+    read_buffer_ = new RecvBuffer();
+    write_buffer_ = new SendBuffer();
 }
 bool ConnectObj::Send() {
     while (true) {
         auto need_send_size = write_buffer_->GetSize();
+        if (need_send_size == 0) {
+            return true;
+        }
         char* buffer = new char[need_send_size]{ 0 };
         if (need_send_size <= 0) {
             return true;
@@ -107,7 +110,7 @@ void ConnectObj::SendPacket(std::shared_ptr<Packet> packet) {
     write_buffer_->AddPacket(packet);
 }
 
-std::shared_ptr<Packet> ReadBuffer::GetPacket(int socket_fd) {
+std::shared_ptr<Packet> RecvBuffer::GetPacket(int socket_fd) {
     if (size_ < sizeof(uint16_t)) { // check whether enough length for data size
         return nullptr;
     }
@@ -131,7 +134,7 @@ std::shared_ptr<Packet> ReadBuffer::GetPacket(int socket_fd) {
     return packet;
 }
 
-void WriteBuffer::AddPacket(std::shared_ptr<Packet> packet) {
+void SendBuffer::AddPacket(std::shared_ptr<Packet> packet) {
     PacketHead head;
     head.msg_id_ = packet->GetMsgId();
     head.data_size_ = packet->GetSize();
