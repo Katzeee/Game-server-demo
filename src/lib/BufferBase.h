@@ -13,7 +13,7 @@ namespace xac {
 //     std::cout << "free " << std::endl;
 //     ::free(ptr);
 // }
-class Buffer : public IDisposable {
+class BufferBase {
 protected:
 	char* buffer_ = nullptr;
 	size_t start_ = 0; // buffer start position
@@ -22,11 +22,10 @@ protected:
     // when end_ == start_, buffer is empty
     size_t capacity_ = 0; // buffer capacity
 public:
-	Buffer();
-	Buffer(size_t size);
+	BufferBase();
+	BufferBase(size_t size);
 	size_t GetSize();
 	size_t GetCapacity();
-    void Dispose() override { delete[] buffer_; }
 	virtual void ReAlloc(size_t size);
     virtual size_t GetEmptySize();
 	virtual bool MemcopyFromBuffer(char* des, size_t size);
@@ -35,13 +34,13 @@ public:
     virtual bool RemoveData(size_t size);
     virtual char* GetBufferEndAddr();
     virtual char* GetBufferStartAddr();
-	virtual ~Buffer();
+	virtual ~BufferBase();
 };
 
-class RingBuffer : public Buffer {
+class RingBuffer : public BufferBase {
 public:
-    RingBuffer() : Buffer() {}
-    RingBuffer(size_t size) : Buffer(size) {}
+    RingBuffer() : BufferBase() {}
+    RingBuffer(size_t size) : BufferBase(size) {}
     bool MemcopyFromBuffer(char* des, size_t size) override;
     bool MemcopyToBuffer(char* src, size_t size) override;
     bool RemoveData(size_t size) override;
@@ -49,15 +48,15 @@ public:
     size_t GetEmptySize() override;
 };
 
-class NormalBuffer : public Buffer {
+class NormalBuffer : public BufferBase {
 public:
-    NormalBuffer() : Buffer() { 
+    NormalBuffer() : BufferBase() { 
     //    std::cout << "Normal buffer" << std::endl; 
     }
-    NormalBuffer(size_t size) : Buffer(size) {}
-    // ~NormalBuffer() { Buffer::~Buffer(); }
-    // void MemcopyFromBuffer(char* des, size_t size) { Buffer::MemcopyFromBuffer(des, size); }
-    // void MemcopyToBuffer(char* src, size_t size) { Buffer::MemcopyToBuffer(src, size); }
+    NormalBuffer(size_t size) : BufferBase(size) {}
+    // ~NormalBuffer() { BufferBase::~BufferBase(); }
+    // void MemcopyFromBuffer(char* des, size_t size) { BufferBase::MemcopyFromBuffer(des, size); }
+    // void MemcopyToBuffer(char* src, size_t size) { BufferBase::MemcopyToBuffer(src, size); }
 };
 
 

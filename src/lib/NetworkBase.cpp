@@ -36,14 +36,12 @@ bool NetworkBase::Select() {
     for (auto it = connects_.begin(); it != connects_.end(); ) {
         if (FD_ISSET(it->first, &except_fds_)) { // if fd has exception, close the connection
             std::cout << "except " << it->first << std::endl;
-            it->second->Dispose();
             delete it->second;
             it = connects_.erase(it);
             continue;
         }
         if (FD_ISSET(it->first, &read_fds_)) {
             if (!it->second->Receive()) {
-                it->second->Dispose();
                 delete it->second;
                 it = connects_.erase(it);
                 continue;
@@ -51,7 +49,6 @@ bool NetworkBase::Select() {
         }
         if (FD_ISSET(it->first, &write_fds_)) {
             if (!it->second->Send()) {
-                it->second->Dispose();
                 delete it->second;
                 it = connects_.erase(it);
                 continue;
@@ -127,8 +124,8 @@ void NetworkBase::SetNonBlock(int socket) {
 
 NetworkBase::~NetworkBase() {
     for (auto it : connects_) {
-        it.second->Dispose();
         delete it.second;
     }
 }
+
 } // end namespace xac

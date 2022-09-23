@@ -4,6 +4,10 @@
 
 namespace xac {
 
+bool NetworkConnecter::Connect() {
+    return NetworkConnecter::Connect(ip_addr_, port_);
+}
+
 bool NetworkConnecter::Connect(std::string ip_addr, uint16_t port) {
     master_socket_fd_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (master_socket_fd_ <= 0) {
@@ -22,12 +26,20 @@ bool NetworkConnecter::Connect(std::string ip_addr, uint16_t port) {
     SetNonBlock(master_socket_fd_);
     ConnectObj* connect_obj = new ConnectObj(master_socket_fd_);
     connects_.insert(std::pair(master_socket_fd_, connect_obj));
-
+    ip_addr_ = ip_addr;
+    port_ = port;
     return true;
 }
 
 void NetworkConnecter::Update() {
 
+    if (master_socket_fd_ == -1) {
+        if (!Connect()) {
+            return;
+        }
+
+        std::cout << "Re connect" << std::endl;
+    }
 
     Select();
 

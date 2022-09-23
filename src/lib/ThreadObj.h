@@ -6,8 +6,7 @@ namespace xac {
 
 class ThreadObj : public MessageHandler {
 public:
-    ~ThreadObj() {}
-    void Dispose() override { MessageHandler::Dispose(); }
+    virtual ~ThreadObj() = default;
     virtual void Init() = 0;
     virtual void Update() = 0;
 

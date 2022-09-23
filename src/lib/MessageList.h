@@ -6,7 +6,6 @@
 namespace xac {
 class MessageList : public MessageListBase {
 public:
-    void Dispose() override;
     // void Init() override;
     void RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func);
     void HandleMessages() override;
@@ -18,7 +17,6 @@ protected:
 class MessageListWithFilter : public MessageListBase {
 public:
     using FilterFunc = std::function<bool(std::shared_ptr<Packet>)>;
-    void Dispose() override;
     void HandleMessages() override;
     bool IsConcernAbout(std::shared_ptr<Packet> packet) override;
     void RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func, FilterFunc filter_func);

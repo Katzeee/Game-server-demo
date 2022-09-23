@@ -14,4 +14,5 @@ void MessageHandler::InformMessageList(std::shared_ptr<Packet> packet) {
     }
 }
 
+
 } // end namespace xac

@@ -23,7 +23,6 @@ public:
     NetworkBase() {}
     virtual ~NetworkBase();
     bool Select();
-    void Dispose() override { ThreadObj::Dispose(); }
     void Update() override;
     virtual void Init() = 0;
     void SendPacket(std::shared_ptr<Packet> packet);

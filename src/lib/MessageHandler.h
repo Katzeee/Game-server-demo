@@ -5,9 +5,10 @@
 
 namespace xac {
 
-class MessageHandler : public IDisposable {
+class MessageHandler {
 public:
-    void Dispose() override {}
+    MessageHandler() = default;
+     virtual ~MessageHandler() = default;
     void InformMessageList(std::shared_ptr<Packet> packet);
 protected:
     std::shared_ptr<MessageListBase> message_list_ { nullptr };

@@ -35,14 +35,13 @@ public:
         network_listener->Listen("127.0.0.1", 2233);
         thread_manager_->AddNetworkToThread(network_listener);
     }
-    ~MsgTestApp() override { Dispose(); }
+    ~MsgTestApp() override {}
     void InitApp() override {
         auto test_msg_handler = new TestMsgHandler();
         test_msg_handler->Init();
         thread_manager_->AddObjToThread(test_msg_handler);
         //thread_manager_->AddObjToThread(test_msg_handler);
     }
-    void Dispose() override {}
     void StartAllThread() override {
         thread_manager_->StartAllThread();
     }

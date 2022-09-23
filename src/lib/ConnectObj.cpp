@@ -13,15 +13,14 @@ ConnectObj::ConnectObj(int socket_fd) : socket_fd_(socket_fd) {
 }
 bool ConnectObj::Send() {
     while (true) {
-        char* buffer = nullptr;
         auto need_send_size = write_buffer_->GetSize();
+        char* buffer = new char[need_send_size]{ 0 };
         if (need_send_size <= 0) {
             return true;
         }
-        buffer = (char*)malloc(need_send_size);
         write_buffer_->MemcopyFromBuffer(buffer, need_send_size);
         auto send_size = ::send(socket_fd_, buffer, need_send_size, 0);
-        free(buffer);
+        delete[] buffer;
         if (send_size > 0) {
             write_buffer_->RemoveData(send_size);
             return true;
@@ -45,7 +44,7 @@ bool ConnectObj::HasRecvData() {
 }
 bool ConnectObj::Receive() {
     auto hasData = false;
-    char* buffer = (char*)::malloc(read_buffer_->GetEmptySize());
+    char* buffer = new char[read_buffer_->GetEmptySize()];
     ssize_t data_size = 0;
     while(true) {
         if (read_buffer_->GetEmptySize() <= sizeof(PacketHead)) {
@@ -79,7 +78,7 @@ bool ConnectObj::Receive() {
             ThreadManager::GetInstance()->DispatchMessage(packet);
         }
     }
-    ::free(buffer);
+    delete[] buffer;
     return hasData;
 }
 
@@ -87,10 +86,7 @@ int ConnectObj::GetSocket() const {
     return socket_fd_;
 }
 
-void ConnectObj::Dispose() {
-    if (is_disposed) {
-        return;
-    }
+ConnectObj::~ConnectObj() {
     std::cout << "shutdown: " << socket_fd_ << std::endl;
     ::shutdown(socket_fd_, SHUT_RDWR);
     if (read_buffer_) {
@@ -101,11 +97,6 @@ void ConnectObj::Dispose() {
         delete write_buffer_;
         write_buffer_ = nullptr;
     }
-    is_disposed = true;
-}
-
-ConnectObj::~ConnectObj() {
-    Dispose();
 }
 
 std::shared_ptr<Packet> ConnectObj::GetPacket() {

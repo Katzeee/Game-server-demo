@@ -2,7 +2,7 @@
 #include <iostream>
 #include <memory>
 #include "IDisposable.h"
-#include "Buffer.h"
+#include "BufferBase.h"
 #include "Packet.h"
 
 namespace xac {
@@ -19,16 +19,15 @@ public:
 };
 
 
-class ConnectObj : public IDisposable {
+class ConnectObj {
 
 public:
 	ConnectObj(int socket_fd);
-    ~ConnectObj() override;
+    virtual ~ConnectObj();
 	bool Send();
     bool HasSendData();
     bool HasRecvData();
     bool Receive();
-    void Dispose() override;
     void SendPacket(std::shared_ptr<Packet> packet);
     int GetSocket() const;
     std::shared_ptr<Packet> GetPacket();

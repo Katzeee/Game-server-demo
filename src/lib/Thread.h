@@ -7,11 +7,10 @@
 
 namespace xac {
 
-class Thread : public IDisposable {
+class Thread {
 public:
     Thread();
     ~Thread();
-    void Dispose();
     void Start(); // start thread
     void Update(); // update function
     void Stop(); // stop thread

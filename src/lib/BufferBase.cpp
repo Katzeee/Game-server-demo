@@ -1,19 +1,19 @@
 #include <iostream>
 #include <cstring>
-#include "Buffer.h"
+#include "BufferBase.h"
 namespace xac {
-Buffer::Buffer() {
+BufferBase::BufferBase() {
 	size_ = 0;
 	capacity_ = 1 * 128;
     buffer_ = new char[capacity_]{0};
     
 }
 
-Buffer::Buffer(size_t size) : size_(0), capacity_(size) {
+BufferBase::BufferBase(size_t size) : size_(0), capacity_(size) {
     buffer_ = new char[capacity_]{0};
 }
 
-void Buffer::ReAlloc(size_t size = 0) {
+void BufferBase::ReAlloc(size_t size = 0) {
     if (GetEmptySize() > size) {
         return;
     }
@@ -27,7 +27,7 @@ void Buffer::ReAlloc(size_t size = 0) {
     buffer_ = new_buffer;
 }
 
-bool Buffer::MemcopyToBuffer(char* src, size_t size) {
+bool BufferBase::MemcopyToBuffer(char* src, size_t size) {
     size_t empty_size = capacity_ - end_;
     if (empty_size <= size) {
         std::cout << "No enough position" << std::endl;
@@ -37,7 +37,7 @@ bool Buffer::MemcopyToBuffer(char* src, size_t size) {
     return true;
 }
 
-bool Buffer::MemcopyFromBuffer(char* des, size_t size) {
+bool BufferBase::MemcopyFromBuffer(char* des, size_t size) {
     // size_ is fake to indicate the used part of a buffer_ having removed data. It is correct to calculate the emptysieze but cannot reflect the real size
     if (size_ < size) {
         std::cout << "Don't have enough data" << std::endl;
@@ -47,23 +47,23 @@ bool Buffer::MemcopyFromBuffer(char* des, size_t size) {
     return true;
 }
 
-Buffer::~Buffer() {
+BufferBase::~BufferBase() {
     delete[] buffer_;
 }
 
-size_t Buffer::GetSize() {
+size_t BufferBase::GetSize() {
     return size_;
 }
 
-size_t Buffer::GetCapacity() {
+size_t BufferBase::GetCapacity() {
     return capacity_;
 }
 
-size_t Buffer::GetEmptySize() {
+size_t BufferBase::GetEmptySize() {
     return capacity_ - end_;
 }
 
-bool Buffer::FillData(size_t size) {
+bool BufferBase::FillData(size_t size) {
     if (size + end_ >= capacity_) {
         return false;
     }
@@ -72,7 +72,7 @@ bool Buffer::FillData(size_t size) {
     return true;
 }
 
-bool Buffer::RemoveData(size_t size) {
+bool BufferBase::RemoveData(size_t size) {
     if (size_ < size) {
         return false;
     }
@@ -81,11 +81,11 @@ bool Buffer::RemoveData(size_t size) {
     return true;
 }
 
-char* Buffer::GetBufferStartAddr() {
+char* BufferBase::GetBufferStartAddr() {
     return buffer_ + start_;
 }
 
-char* Buffer::GetBufferEndAddr() {
+char* BufferBase::GetBufferEndAddr() {
     return buffer_ + end_;
 }
 

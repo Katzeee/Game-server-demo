@@ -7,7 +7,7 @@ Thread::Thread() {
     
 }
 
-void Thread::Dispose() {
+Thread::~Thread() {
     Stop();
     delete thread_;
     thread_ = nullptr;
@@ -15,10 +15,6 @@ void Thread::Dispose() {
         delete it;
     }
     thread_objs_.clear();
-}
-
-Thread::~Thread() {
-    Dispose();
 }
 
 void Thread::Start() {

@@ -3,9 +3,6 @@
 
 namespace xac {
 
-void MessageList::Dispose() {
-
-}
 
 void MessageList::RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func) {
     if (callback_func_list_.find(msg_id) != callback_func_list_.end()) {
@@ -34,9 +31,6 @@ void MessageList::HandleMessages() {
     }
 }
 
-void MessageListWithFilter::Dispose() {
-
-}
 
 void MessageListWithFilter::RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func, FilterFunc filter_func = nullptr) {
     if (callback_func_list_.find(msg_id) != callback_func_list_.end()) {
