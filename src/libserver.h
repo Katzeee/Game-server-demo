@@ -8,3 +8,4 @@
 #include "lib/MessageHandler.h"
 #include "lib/MessageList.h"
 #include "lib/protobuf/proto.h"
+#include "lib/StateMachineBase.h"
