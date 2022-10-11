@@ -25,8 +25,13 @@ aux_source_directory(src/lib LIB_SRC)
 file(GLOB proto_files CONFIG_DEPENDS src/lib/protobuf/*.proto)
 PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS ${proto_files})
 
+aux_source_directory(src/ecslib LIB_ECS_SRC)
+
 
 add_library(libserver OBJECT ${LIB_SRC} ${PROTO_SRCS})
+target_link_libraries(libserver ${link_libs})
+
+add_library(ecslibserver OBJECT ${LIB_ECS_SRC})
 target_link_libraries(libserver ${link_libs})
 
 
@@ -70,3 +75,11 @@ target_link_libraries(msg_list_test libserver)
 add_executable(robot test/message_list_test/robot.cpp)
 add_dependencies(robot libserver)
 target_link_libraries(robot libserver)
+
+add_executable(objectpool_test test/objectpool_test.cpp)
+add_dependencies(objectpool_test ecslibserver)
+target_link_libraries(objectpool_test ecslibserver)
+
+add_executable(entitysystem_test test/entitysystem_test.cpp)
+add_dependencies(entitysystem_test ecslibserver)
+target_link_libraries(entitysystem_test ecslibserver)
