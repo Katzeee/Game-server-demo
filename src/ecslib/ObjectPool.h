@@ -13,7 +13,10 @@ class ObjectPool : public Singleton<ObjectPool<T>> {
   ~ObjectPool() { std::cout << free_objs_.size() << std::endl; }
   template <typename... Args>
   auto InstantiateOne(Args &&...args) -> std::shared_ptr<T>;
-  void FreeOne(std::shared_ptr<T> free_obj) { free_objs_.push(free_obj); }
+  void FreeOne(std::shared_ptr<T> free_obj) {
+    auto guard = std::lock_guard(mutex_);
+    free_objs_.push(free_obj);
+  }
 
  private:
   std::mutex mutex_;
@@ -29,10 +32,12 @@ template <typename T>
 template <typename... Args>
 auto ObjectPool<T>::InstantiateOne(Args &&...args) -> std::shared_ptr<T> {
   std::shared_ptr<T> obj = nullptr;
-  if (!free_objs_.empty()) {
+  {
     auto guard = std::lock_guard(mutex_);
-    obj = free_objs_.front();
-    free_objs_.pop();
+    if (!free_objs_.empty()) {
+      obj = free_objs_.front();
+      free_objs_.pop();
+    }
   }
   if (obj == nullptr) {
     obj = CreateOne();
