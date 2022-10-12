@@ -15,6 +15,7 @@ class ObjectPool : public Singleton<ObjectPool<T>> {
   auto InstantiateOne(Args &&...args) -> std::shared_ptr<T>;
   void FreeOne(std::shared_ptr<T> free_obj) {
     auto guard = std::lock_guard(mutex_);
+    free_obj->Dispose();
     free_objs_.push(free_obj);
   }
 

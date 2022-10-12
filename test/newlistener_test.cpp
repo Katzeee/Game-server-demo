@@ -1,4 +1,3 @@
-#include <memory>
 #include "../src/ecslibserver.h"
 
 using namespace xac;
@@ -26,9 +25,9 @@ class A : public IPoolObject<A, int>, public ComponentBase, public IUpdateCompon
 };
 
 int main() {
-  auto es = std::make_shared<Thread>();
-  es->AddComponent<A>(1);
-  es->Start();
-  std::this_thread::sleep_for(std::chrono::seconds(2));
-  es->Stop();
+  ThreadManager::GetInstance()->CreateComponent<NetworkListener>("127.0.0.1", 2233);
+  ThreadManager::GetInstance()->CreateComponent<A>(1);
+  ThreadManager::GetInstance()->StartAllThread();
+  while(ThreadManager::GetInstance()->IsLoop());
+  return 0;
 }

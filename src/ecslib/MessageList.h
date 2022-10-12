@@ -8,7 +8,7 @@ class MessageList : public MessageListBase {
 public:
     // void Init() override;
     void RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func);
-    void HandleMessages() override;
+    void HandleMessage(std::shared_ptr<Packet> packet) override;
     bool IsConcernAbout(std::shared_ptr<Packet> packet) override;
 protected:
     std::map<int, CallBackFunc> callback_func_list_{};
@@ -17,7 +17,7 @@ protected:
 class MessageListWithFilter : public MessageListBase {
 public:
     using FilterFunc = std::function<bool(std::shared_ptr<Packet>)>;
-    void HandleMessages() override;
+    void HandleMessage(std::shared_ptr<Packet> packet) override;
     bool IsConcernAbout(std::shared_ptr<Packet> packet) override;
     void RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func, FilterFunc filter_func);
 protected:

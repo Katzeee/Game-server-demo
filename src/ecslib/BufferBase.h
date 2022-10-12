@@ -52,7 +52,7 @@ class NormalBuffer : public BufferBase {
  public:
   NormalBuffer() = default;
   explicit NormalBuffer(size_t size) : BufferBase(size) {}
-  ~NormalBuffer() override;
+  ~NormalBuffer() override = default;
 };
 
 }  // namespace xac

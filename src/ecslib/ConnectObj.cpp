@@ -78,7 +78,7 @@ bool ConnectObj::Receive() {
                 break;
             }
             std::cout << "dispatch one from socket " << packet->GetSocket() << std::endl;
-            ThreadManager::GetInstance()->DispatchMessage(packet);
+            ThreadManager::GetInstance()->DispatchPacket(packet);
         }
     }
     delete[] buffer;

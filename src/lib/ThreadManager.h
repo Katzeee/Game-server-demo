@@ -18,15 +18,15 @@ public:
     ThreadManager();
     ~ThreadManager() {}
     void StartAllThread();
-    void NewThread();
+    void CreateThread();
     void AddObjToThread(ThreadObj* thread_obj);
     void AddNetworkToThread(NetworkBase* network);
-    void DispatchMessage(std::shared_ptr<Packet> packet);
+    void DispatchPacket(std::shared_ptr<Packet> packet);
     void SendPacket(std::shared_ptr<Packet> packet);
     bool IsLoop();
 private:
     Thread* GetLeastObjThread();
-    std::mutex lock_;
+    std::mutex mutex_;
     std::vector<Thread*> threads_;
     NetworkBase* network_;
 };

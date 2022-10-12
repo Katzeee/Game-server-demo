@@ -21,14 +21,12 @@ bool MessageList::IsConcernAbout(std::shared_ptr<Packet> packet) {
 }
 
 
-void MessageList::HandleMessages() {
-    std::list<std::shared_ptr<Packet>> tmp_message_list;
-    lock_.lock();
-    std::swap(message_list_, tmp_message_list);
-    lock_.unlock();
-    for (auto it : tmp_message_list) {
-        callback_func_list_.find(it->GetMsgId())->second(it);
+void MessageList::HandleMessage(std::shared_ptr<Packet> packet) {
+    auto it = callback_func_list_.find(packet->GetMsgId());
+    if (it == callback_func_list_.end()) {
+        return;
     }
+    it->second(packet);
 }
 
 
@@ -51,14 +49,12 @@ bool MessageListWithFilter::IsConcernAbout(std::shared_ptr<Packet> packet) {
     return call_back_pair->second.first(packet);
 }
 
-void MessageListWithFilter::HandleMessages() {
-    std::list<std::shared_ptr<Packet>> tmp_message_list;
-    lock_.lock();
-    std::swap(message_list_, tmp_message_list);
-    lock_.unlock();
-    for (auto it : tmp_message_list) {
-        callback_func_list_.find(it->GetMsgId())->second.second(it);
+void MessageListWithFilter::HandleMessage(std::shared_ptr<Packet> packet) {
+    auto it = callback_func_list_.find(packet->GetMsgId());
+    if (it == callback_func_list_.end()) {
+        return;
     }
+    (it->second).second(packet);
 }
 
 } // end namespace xac

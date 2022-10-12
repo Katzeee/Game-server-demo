@@ -4,28 +4,28 @@
 namespace xac {
 
 ThreadManager::ThreadManager() {
-    NewThread();
+    CreateThread();
 }
 
 void ThreadManager::StartAllThread() {
     auto threads_copy = std::list<Thread*>();
-    lock_.lock();
+    mutex_.lock();
     std::copy(threads_.begin(), threads_.end(), std::back_inserter(threads_copy));
-    lock_.unlock();
+    mutex_.unlock();
     for (auto it : threads_copy) {
         it->Start();
     }
 }
 
-void ThreadManager::NewThread() {
+void ThreadManager::CreateThread() {
     auto thread = new Thread();
-    lock_.lock();
+    mutex_.lock();
     threads_.emplace_back(thread);
-    lock_.unlock();
+    mutex_.unlock();
 }
 
 void ThreadManager::AddObjToThread(ThreadObj* thread_obj) {
-    lock_.lock();
+    mutex_.lock();
     auto thread = GetLeastObjThread();
     if (thread == nullptr) {
         throw std::logic_error("no thread!");
@@ -33,7 +33,7 @@ void ThreadManager::AddObjToThread(ThreadObj* thread_obj) {
     }
     thread->AddThreadObj(thread_obj);
     std::cout << "add thread obj" << std::endl;
-    lock_.unlock();
+    mutex_.unlock();
 }
 
 void ThreadManager::AddNetworkToThread(NetworkBase* network) {
@@ -42,20 +42,20 @@ void ThreadManager::AddNetworkToThread(NetworkBase* network) {
 }
 
 bool ThreadManager::IsLoop() {
-    lock_.lock();
+    mutex_.lock();
     for (auto it : threads_)  {
         if (it->IsRunning()) {
             return true;
         }
     }
-    lock_.unlock();
+    mutex_.unlock();
     return false;
 }
 
-void ThreadManager::DispatchMessage(std::shared_ptr<Packet> packet) {
-    auto guard = std::lock_guard(lock_);
+void ThreadManager::DispatchPacket(std::shared_ptr<Packet> packet) {
+    auto guard = std::lock_guard(mutex_);
     for (auto it : threads_) {
-        it->DispatchMessage(packet);
+        it->DispatchPacket(packet);
     }
 }
 

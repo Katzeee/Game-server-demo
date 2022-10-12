@@ -22,7 +22,7 @@ public:
 int main() {
     ThreadManager::Instance();
     auto thread_manager = ThreadManager::GetInstance();
-    //thread_manager->NewThread();
+    //thread_manager->CreateThread();
     auto one_obj = new OneObj();
     thread_manager->AddObjToThread(one_obj);
     auto two_obj = new TwoObj();

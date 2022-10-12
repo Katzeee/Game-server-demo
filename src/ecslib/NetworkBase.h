@@ -11,20 +11,17 @@
 #include <list>
 #include <mutex>
 
-#include "IDisposable.h"
 #include "ConnectObj.h"
-#include "ThreadObj.h"
 #include "Packet.h"
+#include "ComponentBase.h"
 
 namespace xac {
 
-class NetworkBase : public ThreadObj {
+class NetworkBase : public ComponentBase {
 public:
-    NetworkBase() {}
+    NetworkBase() = default;
     virtual ~NetworkBase();
-    bool Select();
-    void Update() override;
-    virtual void Init() = 0;
+    auto Select() -> bool;
     void SendPacket(std::shared_ptr<Packet> packet);
     // virtual void Update() = 0;
 protected:
@@ -32,10 +29,10 @@ protected:
     std::map<int, std::shared_ptr<ConnectObj>> connects_;
     std::list<std::shared_ptr<Packet>> send_msg_list_;
     fd_set read_fds_, write_fds_, except_fds_;
-    std::mutex lock_;
+    std::mutex mutex_;
     static void SetSocketOpt(int socket);
     static void SetNonBlock(int socket);
-    bool CreateSocket();
+    auto CreateSocket() -> bool;
 };
 
-}
+} // end namespace xac

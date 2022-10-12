@@ -1,15 +1,17 @@
 #pragma once
 
-#include <memory>
 #include <cstdint>
+#include <memory>
 
 namespace xac {
-class ComponentBase : public std::enable_shared_from_this<ComponentBase> {
-public:
-    void SetParent(std::shared_ptr<ComponentBase> parent);
+class ComponentBase {
+ public:
+  void SetParent(const std::shared_ptr<ComponentBase>& parent);
+  auto GetUID() -> uint64_t;
+  auto GetParent() -> std::shared_ptr<ComponentBase>;
 
-private:
-    uint64_t u_id_;
-    std::shared_ptr<ComponentBase> parent_;
+ private:
+  uint64_t u_id_;
+  std::shared_ptr<ComponentBase> parent_;
 };
 }  // end namespace xac

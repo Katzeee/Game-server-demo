@@ -47,7 +47,7 @@ void Thread::AddThreadObj(ThreadObj* thread_obj) {
 }
 
 
-void Thread::DispatchMessage(std::shared_ptr<Packet> packet) {
+void Thread::DispatchPacket(std::shared_ptr<Packet> packet) {
     auto guard = std::lock_guard(lock_);
     for (auto it : thread_objs_) {
         it->InformMessageList(packet);
