@@ -28,7 +28,6 @@ class NetworkBase : public ThreadObj {
   void Update() override;
   virtual void Init() = 0;
   void AddPacketToList(std::shared_ptr<Packet> packet);
-  // virtual void Update() = 0;
  protected:
   int master_socket_fd_{-1};  // listen fd or connect fd
   std::map<int, std::shared_ptr<ConnectObj>> connects_;

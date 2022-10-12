@@ -56,7 +56,7 @@ bool NetworkBase::Select() {
   return true;
 }
 
-void NetworkBase::SendPacket(std::shared_ptr<Packet> packet) {
+void NetworkBase::AddPacketToList(std::shared_ptr<Packet> packet) {
   auto guard = std::lock_guard(lock_);
   // lock_.try_lock();
   send_msg_list_.emplace_back(packet);

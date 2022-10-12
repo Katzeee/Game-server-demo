@@ -60,10 +60,6 @@ add_executable(singleton_test test/singleton_test.cpp)
 add_dependencies(singleton_test libserver)
 target_link_libraries(singleton_test libserver)
 
-add_executable(serverapp_test test/serverapp_test.cpp)
-add_dependencies(serverapp_test libserver)
-target_link_libraries(serverapp_test libserver)
-
 add_executable(thread_test test/thread_test.cpp)
 add_dependencies(thread_test libserver)
 target_link_libraries(thread_test libserver)
