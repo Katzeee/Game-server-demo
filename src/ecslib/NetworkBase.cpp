@@ -56,10 +56,26 @@ bool NetworkBase::Select() {
   return true;
 }
 
-void NetworkBase::SendPacket(std::shared_ptr<Packet> packet) {
+void NetworkBase::AddPacketToList(std::shared_ptr<Packet> packet) {
   auto guard = std::lock_guard(mutex_);
-  // mutex_.try_lock();
   send_msg_list_.emplace_back(packet);
+}
+
+void NetworkBase::SendPacketUpdate() {
+  std::list<std::shared_ptr<Packet>> tmp_list;
+  {
+    auto guard = std::lock_guard(mutex_);
+    if (send_msg_list_.empty()) {
+      return;
+    }
+    tmp_list.swap(send_msg_list_);
+  }
+  for (auto it : tmp_list) {
+    auto connect = connects_.find(it->GetSocket());
+    if (connect != connects_.end()) {
+      connect->second->SendPacket(it);
+    }
+  }
 }
 
 void NetworkBase::SetSocketOpt(int socket) {

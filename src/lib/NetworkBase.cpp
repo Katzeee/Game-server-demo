@@ -1,7 +1,6 @@
+#include "NetworkBase.h"
 #include <fcntl.h>
 #include <memory.h>
-#include "NetworkBase.h"
-
 
 namespace xac {
 

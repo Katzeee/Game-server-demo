@@ -63,7 +63,7 @@ void ThreadManager::SendPacket(std::shared_ptr<Packet> packet) {
     if (!network_) {
         assert(0);
     }
-    network_->SendPacket(packet);
+    network_->AddPacketToList(packet);
 }
 
 Thread* ThreadManager::GetLeastObjThread() {

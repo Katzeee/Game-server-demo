@@ -15,7 +15,7 @@ class MessageListBase {
   MessageListBase() = default;
   ~MessageListBase() = default;
   // virtual void RegistCBFunc(Proto::MsgId msg_id, CallBackFunc callback_func) = 0;
-  virtual bool IsConcernAbout(std::shared_ptr<Packet> packet) = 0;
+  virtual auto IsConcernAbout(std::shared_ptr<Packet> packet) -> bool = 0;
   virtual void HandleMessage(std::shared_ptr<Packet> packet) = 0;
 };
 

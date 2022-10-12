@@ -22,8 +22,8 @@ public:
     NetworkBase() = default;
     virtual ~NetworkBase();
     auto Select() -> bool;
-    void SendPacket(std::shared_ptr<Packet> packet);
-    // virtual void Update() = 0;
+    void AddPacketToList(std::shared_ptr<Packet> packet);
+    void SendPacketUpdate();
 protected:
     int master_socket_fd_{-1}; // listen fd or connect fd
     std::map<int, std::shared_ptr<ConnectObj>> connects_;

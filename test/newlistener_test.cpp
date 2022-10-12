@@ -15,7 +15,7 @@ class A : public IPoolObject<A, int>, public ComponentBase, public IUpdateCompon
   void RegistCBFuncs() override {
     auto message_list = std::make_unique<MessageList>();
     message_list->RegistCBFunc(Proto::MsgId::MI_TestMsg, [](std::shared_ptr<Packet> packet) {
-        std::cout << "test message" << std::endl;
+        std::cout << "test message " << packet->GetSocket() << std::endl;
     });
     message_list_ = std::unique_ptr<MessageListBase>(message_list.release());
   }

@@ -48,7 +48,7 @@ void NetworkConnecter::Update() {
         test_msg.set_index(i);
         test_msg.set_msg("sssss");
         packet->SerializeToBuffer(test_msg);
-        SendPacket(packet);
+        AddPacketToList(packet);
         std::cout << "send msgid: " << packet->GetMsgId() << " msg_index: " << i  << ", socket: " << master_socket_fd_ << std::endl;
     }
     NetworkBase::Update();
@@ -63,7 +63,7 @@ void NetworkConnecter::Reconnect() {
     test_msg.set_index(i);
     test_msg.set_msg("reconnect");
     packet->SerializeToBuffer(test_msg);
-    SendPacket(packet);
+    AddPacketToList(packet);
 }
 
 } // end namespace xac

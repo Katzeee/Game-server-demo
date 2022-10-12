@@ -61,6 +61,7 @@ void NetworkListener::Update() {
     Accept();
   }
   Select();
+  NetworkBase::SendPacketUpdate();
   // for (auto it : connects_) {
   //     if (it.second->HasRecvData()) {
   //         auto packet = it.second->GetPacket();
