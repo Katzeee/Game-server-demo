@@ -8,23 +8,20 @@
 #include "../common.h"
 #include "IComponent.h"
 #include "Singleton.h"
-#include "ThreadManager.h"
 
 namespace xac {
-class Console : public Singleton<Console>, public IUpdateComponent {
+class ConsoleBase : public Singleton<ConsoleBase>, public IUpdateComponent {
  public:
   using SplitCommandType = std::vector<std::string_view>;
   using HandleFuncType = std::function<void(SplitCommandType)>;
-  Console();
+  ConsoleBase();
   void Update() override;
 
- private:
+ protected:
   void HandleInput(const SplitCommandType &command);
-  void HandleErrorCommands();
-  void HandleQuitCommand(const SplitCommandType &command);
-  void HandlePrintCommand(const SplitCommandType &command);
+  static void HandleErrorCommands();
   std::map<std::string_view, HandleFuncType> handle_funcs_;
-  bool is_running = true;
   std::string command_buffer_;
+  std::string ps = "server > ";
 };
 }  // end namespace xac
