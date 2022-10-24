@@ -6,3 +6,5 @@
 #include "ecslib/Thread.h"
 #include "ecslib/ThreadManager.h"
 #include "ecslib/NetworkListener.h"
+#include "ecslib/ConsoleBase.h"
+#include "common.h"

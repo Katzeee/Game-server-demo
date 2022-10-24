@@ -23,12 +23,13 @@ class ThreadManager : public Singleton<ThreadManager>, public EntitySystem {
 
  private:
   std::mutex mutex_;
-  std::list<Thread *> threads_; //TODO(xac): Refresh list
+  std::list<Thread *> threads_;  // TODO(xac): Refresh list
 };
 
 template <typename T, typename... Args>
 void ThreadManager::CreateComponent(Args &&...args) {
-    threads_.front()->AddComponent<T>(args...);
+  // TODO(xac) : dispatch to different threads
+  threads_.front()->AddComponent<T>(args...);
 }
 
 }  // end namespace xac

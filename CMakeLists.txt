@@ -83,3 +83,11 @@ target_link_libraries(entitysystem_test ecslibserver)
 add_executable(newlistener_test test/newlistener_test.cpp)
 add_dependencies(newlistener_test ecslibserver)
 target_link_libraries(newlistener_test ecslibserver)
+
+add_executable(console_test test/console_test.cpp)
+add_dependencies(console_test ecslibserver)
+target_link_libraries(console_test ecslibserver)
+
+add_executable(common_test test/common_test.cpp)
+add_dependencies(common_test ecslibserver)
+target_link_libraries(common_test ecslibserver)

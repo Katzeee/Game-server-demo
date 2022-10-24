@@ -10,21 +10,21 @@ void ThreadManager::StartAllThread() {
   mutex_.lock();
   std::copy(threads_.begin(), threads_.end(), std::back_inserter(threads_copy));
   mutex_.unlock();
-  for (auto it : threads_copy) {
+  for (auto *it : threads_copy) {
     it->Start();
   }
 }
 
 void ThreadManager::CreateThread() {
-  auto thread = new Thread();
+  auto *thread = new Thread();
   mutex_.lock();
   threads_.emplace_back(thread);
   mutex_.unlock();
 }
 
-bool ThreadManager::IsLoop() {
+auto ThreadManager::IsLoop() -> bool {
   auto guard = std::lock_guard(mutex_);
-  for (auto it : threads_) {
+  for (auto *it : threads_) {
     if (it->IsRunning()) {
       return true;
     }
