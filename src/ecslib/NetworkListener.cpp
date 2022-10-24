@@ -47,7 +47,8 @@ auto NetworkListener::Accept() -> int {
       return res;
     }
     NetworkBase::SetSocketOpt(socket_fd);
-    auto connectobj_ptr = std::make_shared<ConnectObj>(socket_fd);
+    //auto connectobj_ptr = std::make_shared<ConnectObj>(socket_fd);
+    auto *connectobj_ptr = ObjectPool<ConnectObj>::GetInstance()->InstantiateOne(socket_fd);
     std::cout << "accept " << socket_fd << std::endl;
 
     connects_.insert(std::pair(socket_fd, connectobj_ptr));

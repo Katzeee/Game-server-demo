@@ -2,39 +2,42 @@
 #include <iostream>
 #include <memory>
 #include "BufferBase.h"
+#include "IPoolObject.h"
+#include "IResetable.h"
 #include "Packet.h"
 
 namespace xac {
 
 class RecvBuffer;
 class SendBuffer : public RingBuffer {
-public:
-    void AddPacket(std::shared_ptr<Packet> packet);
+ public:
+  void AddPacket(std::shared_ptr<Packet> packet);
 };
 
 class RecvBuffer : public RingBuffer {
-public:
-    std::shared_ptr<Packet> GetPacket(int socket_fd);
+ public:
+  std::shared_ptr<Packet> GetPacket(int socket_fd);
 };
 
+class ConnectObj : public IPoolObject<ConnectObj>, public IResetable<int> {
+ public:
+  ConnectObj() = default;
+  ConnectObj(int socket_fd);
+  virtual ~ConnectObj();
+  void Reset(int socket_fd) override;
+  void BackToPool() override;
+  auto Send() -> bool;
+  auto HasSendData() -> bool;
+  auto HasRecvData() -> bool;
+  auto Receive() -> bool;
+  void SendPacket(std::shared_ptr<Packet> packet);
+  auto GetSocket() const -> int;
+  auto GetPacket() -> std::shared_ptr<Packet>;
 
-class ConnectObj {
-
-public:
-	ConnectObj(int socket_fd);
-    virtual ~ConnectObj();
-	bool Send();
-    bool HasSendData();
-    bool HasRecvData();
-    bool Receive();
-    void SendPacket(std::shared_ptr<Packet> packet);
-    int GetSocket() const;
-    std::shared_ptr<Packet> GetPacket();
-
-protected:
-    const int socket_fd_;
-    RecvBuffer* read_buffer_{ nullptr };
-    SendBuffer* write_buffer_{ nullptr };
+ protected:
+  int socket_fd_ = -1;
+  std::unique_ptr<RecvBuffer> read_buffer_;
+  std::unique_ptr<SendBuffer> write_buffer_;
 };
 
-}
+}  // namespace xac

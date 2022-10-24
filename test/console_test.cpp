@@ -2,7 +2,9 @@
 using namespace xac;
 
 int main() {
-  auto console = Console();
-  console.Update();
+  auto *tm = ThreadManager::GetInstance();
+  tm->CreateComponent<NetworkListener>("127.0.0.1", 2233);
+  tm->CreateComponent<Console>();
+
   return 0;
 }

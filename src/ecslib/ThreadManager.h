@@ -15,6 +15,7 @@ class ThreadManager : public Singleton<ThreadManager>, public EntitySystem {
   ThreadManager();
   ~ThreadManager() = default;
   void StartAllThread();
+  void StopAllThread();
   void CreateThread();
   void DispatchPacket(std::shared_ptr<Packet> packet);
   auto IsLoop() -> bool;

@@ -33,7 +33,7 @@ class EntitySystem {
 
 template <typename T, typename... Args>
 auto EntitySystem::AddComponent(Args &&...args) -> std::shared_ptr<T> {
-  std::shared_ptr<T> comp = ObjectPool<T>::GetInstance()->InstantiateOne(std::forward<Args>(args)...);
+  auto comp = std::shared_ptr<T>(ObjectPool<T>::GetInstance()->InstantiateOne(std::forward<Args>(args)...));
   AddComponentToSystem(comp);
   return comp;
 }

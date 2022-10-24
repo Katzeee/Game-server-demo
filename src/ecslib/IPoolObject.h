@@ -7,17 +7,16 @@
 
 namespace xac {
 
-template <typename T, typename... Args>
+template <typename T>
 class IPoolObject {
  public:
   virtual ~IPoolObject() = default;
-  virtual void Reset(Args... args) = 0;
-  virtual void Dispose() = 0;
-  void BackToPool() {
-    assert(obj_pool_);
-    obj_pool_->FreeOne(this);
+  // virtual void Dispose() = 0;
+  virtual void BackToPool() = 0;
+  void SetPool(ObjectPool<T> *obj_pool) {
+    assert(!obj_pool_);
+    obj_pool_ = obj_pool;
   }
-  void SetPool(ObjectPool<T> *obj_pool) { obj_pool_ = obj_pool; }
 
  protected:
   ObjectPool<T> *obj_pool_;
