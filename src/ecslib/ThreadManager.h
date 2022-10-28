@@ -24,13 +24,15 @@ class ThreadManager : public Singleton<ThreadManager>, public EntitySystem {
 
  private:
   std::mutex mutex_;
-  std::list<Thread *> threads_;  // TODO(xac): Refresh list
+  std::vector<Thread *> threads_;      // TODO(xac): Refresh list
+  size_t component_thread_num_ = 0;  // determine put this component to which thread
 };
 
 template <typename T, typename... Args>
 void ThreadManager::CreateComponent(Args &&...args) {
   // TODO(xac) : dispatch to different threads
-  threads_.front()->AddComponent<T>(args...);
+  component_thread_num_ = component_thread_num_ < threads_.size() ? component_thread_num_ : 0;
+  threads_[component_thread_num_]->AddComponent<T>(args...);
 }
 
 }  // end namespace xac

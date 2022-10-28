@@ -36,7 +36,7 @@ bool NetworkConnecter::Connect(std::string ip_addr, uint16_t port) {
     return false;
   }
   SetSocketOpt(master_socket_fd_);
-  auto connect_obj = std::make_shared<ConnectObj>(master_socket_fd_);
+  auto* connect_obj = ObjectPool<ConnectObj>::GetInstance()->InstantiateOne(master_socket_fd_);
   connects_.insert(std::pair(master_socket_fd_, connect_obj));
   ip_addr_ = ip_addr;
   port_ = port;
@@ -49,18 +49,6 @@ void NetworkConnecter::Update() {
   }
 
   Select();
-
-  if (i > 1) {
-    i--;
-    auto packet = std::make_shared<Packet>(Proto::MsgId::MI_TestMsg, master_socket_fd_);
-    Proto::TestMsg test_msg;
-    test_msg.set_index(i);
-    test_msg.set_msg("sssss");
-    packet->SerializeToBuffer(test_msg);
-    AddPacketToList(packet);
-    std::cout << "send msgid: " << packet->GetMsgId() << " msg_index: " << i << ", socket: " << master_socket_fd_
-              << std::endl;
-  }
   NetworkBase::SendPacketUpdate();
 }
 
@@ -70,7 +58,7 @@ void NetworkConnecter::Reconnect() {
     ;
   auto packet = std::make_shared<Packet>(Proto::MsgId::MI_TestMsg, master_socket_fd_);
   Proto::TestMsg test_msg;
-  test_msg.set_index(i);
+  test_msg.set_index(1);
   test_msg.set_msg("reconnect");
   packet->SerializeToBuffer(test_msg);
   AddPacketToList(packet);

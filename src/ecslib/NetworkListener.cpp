@@ -48,7 +48,7 @@ auto NetworkListener::Accept() -> int {
     NetworkBase::SetSocketOpt(socket_fd);
     //auto connectobj_ptr = std::make_shared<ConnectObj>(socket_fd);
     auto *connectobj_ptr = ObjectPool<ConnectObj>::GetInstance()->InstantiateOne(socket_fd);
-    std::cout << "accept " << socket_fd << std::endl;
+    //std::cout << "accept " << socket_fd << std::endl;
 
     connects_.insert(std::pair(socket_fd, connectobj_ptr));
     res++;
@@ -62,15 +62,5 @@ void NetworkListener::Update() {
   }
   Select();
   NetworkBase::SendPacketUpdate();
-  // for (auto it : connects_) {
-  //     if (it.second->HasRecvData()) {
-  //         auto packet = it.second->GetPacket();
-  //         if (!packet) {
-  //             continue;
-  //         }
-  //         auto proto = packet->ParseToProto<Proto::TestMsg>();
-  //         std::cout << "recv id: " << proto.index() << " msg: " << proto.msg() << std::endl;
-  //     }
-  // }
 }
 }  // end namespace xac

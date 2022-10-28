@@ -36,17 +36,20 @@ bool NetworkBase::Select() {
   for (auto it = connects_.begin(); it != connects_.end();) {
     if (FD_ISSET(it->first, &except_fds_)) {  // if fd has exception, close the connection
       std::cout << "except " << it->first << std::endl;
+      it->second->BackToPool();
       it = connects_.erase(it);
       continue;
     }
     if (FD_ISSET(it->first, &read_fds_)) {
       if (!it->second->Receive()) {
+        it->second->BackToPool();
         it = connects_.erase(it);
         continue;
       }
     }
     if (FD_ISSET(it->first, &write_fds_)) {
       if (!it->second->Send()) {
+        it->second->BackToPool();
         it = connects_.erase(it);
         continue;
       }
@@ -117,7 +120,12 @@ void NetworkBase::SetNonBlock(int socket) {
   fcntl(socket, F_SETFL, flags | O_NONBLOCK);
 }
 
-NetworkBase::~NetworkBase() { connects_.clear(); }
+NetworkBase::~NetworkBase() { 
+  for (auto& it : connects_) {
+    it.second->BackToPool();
+  }
+  connects_.clear(); 
+}
 
 auto NetworkBase::CreateSocket() -> bool {
   master_socket_fd_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);

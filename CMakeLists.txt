@@ -91,3 +91,11 @@ target_link_libraries(console_test ecslibserver)
 add_executable(common_test test/common_test.cpp)
 add_dependencies(common_test ecslibserver)
 target_link_libraries(common_test ecslibserver)
+
+add_executable(accountverifyserver test/accountverifyserver.cpp)
+add_dependencies(accountverifyserver ecslibserver)
+target_link_libraries(accountverifyserver ecslibserver)
+
+add_executable(accountverifyclient test/accountverifyclient.cpp)
+add_dependencies(accountverifyclient ecslibserver)
+target_link_libraries(accountverifyclient ecslibserver)

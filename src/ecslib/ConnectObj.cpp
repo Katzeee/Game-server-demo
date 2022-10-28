@@ -25,6 +25,7 @@ auto ConnectObj::Send() -> bool {
     auto send_size = ::send(socket_fd_, buffer, need_send_size, 0);
     delete[] buffer;
     if (send_size > 0) {
+      //printf("send size %ld\n", send_size);
       write_buffer_->RemoveData(send_size);
       return true;
     } else {
@@ -48,7 +49,7 @@ auto ConnectObj::Receive() -> bool {
       if (static_cast<ssize_t>(read_buffer_->GetEmptySize()) <= data_size) {
         read_buffer_->ReAlloc(data_size);
       }
-      // std::cout << "recv " << data_size <<  std::endl;
+      //printf("recv %ld\n", data_size); 
       read_buffer_->MemcopyToBuffer(buffer, data_size);
       read_buffer_->FillData(data_size);
     } else if (data_size == 0) {
@@ -67,7 +68,7 @@ auto ConnectObj::Receive() -> bool {
       if (packet == nullptr) {
         break;
       }
-      std::cout << "dispatch one from socket " << packet->GetSocket() << std::endl;
+      //std::cout << "dispatch one from socket " << packet->GetSocket() << std::endl;
       ThreadManager::GetInstance()->DispatchPacket(packet);
     }
   }
@@ -90,7 +91,7 @@ void ConnectObj::Dispose() {
 }
 
 ConnectObj::~ConnectObj() {
-  std::cout << "shutdown: " << socket_fd_ << std::endl;
+  std::cout << "~shutdown: " << socket_fd_ << std::endl;
   ::shutdown(socket_fd_, SHUT_RDWR);
   read_buffer_ = nullptr;
   write_buffer_ = nullptr;

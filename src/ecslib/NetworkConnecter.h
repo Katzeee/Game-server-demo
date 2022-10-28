@@ -11,17 +11,17 @@ class NetworkConnecter : public NetworkBase,
                          public IUpdateComponent {
  public:
   NetworkConnecter() = default;
+  virtual ~NetworkConnecter() = default;
   NetworkConnecter(std::string ip_addr, uint16_t port) : ip_addr_(ip_addr), port_(port) {}
   void Reset(std::string ip_addr, uint16_t port) override;
   void Dispose() override;
   bool Connect(std::string ip_addr, uint16_t port);
   void Update() override;
 
- private:
+ protected:
   void Reconnect();
   bool Connect();
   std::string ip_addr_;
   uint16_t port_;
-  int i = 2;
 };
 }  // end namespace xac

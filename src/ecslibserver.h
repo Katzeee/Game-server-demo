@@ -1,3 +1,4 @@
+#pragma once
 #include "ecslib/IResetable.h"
 #include "ecslib/ObjectPool.h"
 #include "ecslib/EntitySystem.h"
