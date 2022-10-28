@@ -1,8 +1,8 @@
 #pragma once
+#include "../protobuf/proto.h"
 #include "IComponent.h"
 #include "IPoolObject.h"
 #include "NetworkBase.h"
-#include "../protobuf/proto.h"
 
 namespace xac {
 
@@ -17,10 +17,15 @@ class NetworkConnecter : public NetworkBase,
   void Dispose() override;
   bool Connect(std::string ip_addr, uint16_t port);
   void Update() override;
+  auto IsConnected() -> bool {
+    auto guard = std::lock_guard(mutex_);
+    return IsConnectedInternal();
+  }
+  bool Connect();
 
  protected:
+  auto IsConnectedInternal() -> bool { return !connects_.empty(); }
   void Reconnect();
-  bool Connect();
   std::string ip_addr_;
   uint16_t port_;
 };

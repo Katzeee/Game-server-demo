@@ -12,7 +12,7 @@ class ObjectPool : public Singleton<ObjectPool<T>> {
  public:
   ~ObjectPool() {
     std::cout << free_objs_.size() << std::endl;
-    while(!free_objs_.empty()) {
+    while (!free_objs_.empty()) {
       auto obj = free_objs_.front();
       free_objs_.pop();
       delete obj;
@@ -22,15 +22,16 @@ class ObjectPool : public Singleton<ObjectPool<T>> {
   auto InstantiateOne(Args &&...args) -> T *;
   void FreeOne(T *free_obj) {
     auto guard = std::lock_guard(mutex_);
-    //free_obj->Dispose();
+    // free_obj->Dispose();
     free_objs_.push(free_obj);
   }
 
  private:
   std::mutex mutex_;
   std::queue<T *> free_objs_;
+
   auto CreateOne() -> T * {
-    auto obj = new T();
+    T *obj = new T();
     obj->SetPool(this);
     return obj;
   }

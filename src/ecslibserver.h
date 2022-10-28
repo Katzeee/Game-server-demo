@@ -10,4 +10,5 @@
 #include "ecslib/NetworkListener.h"
 #include "ecslib/NetworkConnecter.h"
 #include "ecslib/Console.h"
+#include "ecslib/StateMachineBase.h"
 #include "common.h"

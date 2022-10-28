@@ -20,21 +20,21 @@ public:
     StateMachineBase(StatesEnum default_state) : default_state_(default_state) {}
     void ChangeState(StatesEnum state) {
         auto creator = state_creator_[state];
-        if (state_item_) {
-            state_item_->OnExit();
+        if (state_obj_) {
+            state_obj_->OnExit();
         }
-        state_item_ = std::unique_ptr<StateBase<StatesEnum>>(creator());
-        state_item_->OnEnter();
+        state_obj_ = std::unique_ptr<StateBase<StatesEnum>>(creator());
+        state_obj_->OnEnter();
         cur_state_ = state;
 
     }
     void Update() {
-        if (!state_item_) {
+        if (!state_obj_) {
             ChangeState(default_state_);
-            //state_item_ = std::unique_ptr<StateBase<StatesEnum>>(state_creator_[default_state_]());
+            //state_obj_ = std::unique_ptr<StateBase<StatesEnum>>(state_creator_[default_state_]());
             //cur_state_ = default_state_;
         }
-        auto state = state_item_->Update();
+        auto state = state_obj_->Update();
         if (state != cur_state_) {
             ChangeState(state);
         }
@@ -46,7 +46,7 @@ private:
     StatesEnum cur_state_;
     StatesEnum default_state_;
     std::map<StatesEnum, StateCreateFunc> state_creator_;
-    std::unique_ptr<StateBase<StatesEnum>> state_item_;
+    std::unique_ptr<StateBase<StatesEnum>> state_obj_;
 };
 
 } // end namespace xac

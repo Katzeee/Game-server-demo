@@ -26,12 +26,14 @@ file(GLOB proto_files CONFIG_DEPENDS src/protobuf/*.proto)
 PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS ${proto_files})
 
 aux_source_directory(src/ecslib LIB_ECS_SRC)
+aux_source_directory(src/robot ROBOT_SRC)
+message(STATUS ${ROBOT_SRC})
 
 
 add_library(libserver OBJECT ${LIB_SRC} ${PROTO_SRCS})
 target_link_libraries(libserver ${link_libs})
 
-add_library(ecslibserver OBJECT ${LIB_ECS_SRC} ${PROTO_SRCS})
+add_library(ecslibserver OBJECT ${LIB_ECS_SRC} ${PROTO_SRCS} ${ROBOT_SRC})
 target_link_libraries(ecslibserver ${link_libs})
 
 

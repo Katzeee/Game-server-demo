@@ -6,7 +6,7 @@ namespace xac {
 class Account : public ComponentBase, public IMessageComponent, public IPoolObject<Account> {
  public:
   void Reset() override {}
-  void RegistCBFuncs() {
+  void RegistCBFuncs() override {
     auto message_list = new MessageList();
     message_list->RegistCBFunc(Proto::C2L_AccountCheck, [&](std::shared_ptr<Packet> packet) {
       auto proto = packet->ParseToProto<Proto::AccountCheck>();

@@ -23,7 +23,7 @@ void BufferBase::ReAlloc(size_t size = 0) {
     char* new_buffer = (char*)malloc(capacity_ + size);
     memcpy(new_buffer, buffer_, capacity_);
     capacity_ += size;
-    free(buffer_);
+    delete[] buffer_;
     buffer_ = new_buffer;
 }
 
