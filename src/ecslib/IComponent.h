@@ -11,6 +11,7 @@ class IUpdateComponent {
 class IMessageComponent {
  public:
   virtual void RegistCBFuncs() = 0;
+  IMessageComponent() = default;
   virtual ~IMessageComponent() = default;
   void InformMessageList(std::shared_ptr<Packet> packet) {
     if (!message_list_) {

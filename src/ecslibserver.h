@@ -7,5 +7,6 @@
 #include "ecslib/Thread.h"
 #include "ecslib/ThreadManager.h"
 #include "ecslib/NetworkListener.h"
+#include "ecslib/NetworkConnecter.h"
 #include "ecslib/Console.h"
 #include "common.h"

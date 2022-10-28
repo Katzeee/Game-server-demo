@@ -8,6 +8,7 @@
 #include "../common.h"
 #include "IComponent.h"
 #include "Singleton.h"
+#include "IPoolObject.h"
 
 namespace xac {
 class ConsoleBase : public Singleton<ConsoleBase>, public IUpdateComponent {

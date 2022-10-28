@@ -31,8 +31,8 @@ aux_source_directory(src/ecslib LIB_ECS_SRC)
 add_library(libserver OBJECT ${LIB_SRC} ${PROTO_SRCS})
 target_link_libraries(libserver ${link_libs})
 
-add_library(ecslibserver OBJECT ${LIB_ECS_SRC})
-target_link_libraries(libserver ${link_libs})
+add_library(ecslibserver OBJECT ${LIB_ECS_SRC} ${PROTO_SRCS})
+target_link_libraries(ecslibserver ${link_libs})
 
 
 # tests
@@ -64,11 +64,11 @@ add_executable(thread_test test/thread_test.cpp)
 add_dependencies(thread_test libserver)
 target_link_libraries(thread_test libserver)
 
-add_executable(msg_list_test test/message_list_test/TestMsgHandler.cpp)
+add_executable(msg_list_test test/TestMsgHandler.cpp)
 add_dependencies(msg_list_test libserver)
 target_link_libraries(msg_list_test libserver)
 
-add_executable(robot test/message_list_test/robot.cpp)
+add_executable(robot test/robot.cpp)
 add_dependencies(robot libserver)
 target_link_libraries(robot libserver)
 

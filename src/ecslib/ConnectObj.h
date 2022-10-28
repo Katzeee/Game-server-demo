@@ -19,13 +19,13 @@ class RecvBuffer : public RingBuffer {
   std::shared_ptr<Packet> GetPacket(int socket_fd);
 };
 
-class ConnectObj : public IPoolObject<ConnectObj>, public IResetable<int> {
+class ConnectObj : public IPoolObject<ConnectObj, int> {
  public:
   ConnectObj() = default;
   ConnectObj(int socket_fd);
   virtual ~ConnectObj();
   void Reset(int socket_fd) override;
-  void BackToPool() override;
+  void Dispose() override;
   auto Send() -> bool;
   auto HasSendData() -> bool;
   auto HasRecvData() -> bool;

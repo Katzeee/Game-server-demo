@@ -3,14 +3,9 @@
 
 using namespace xac;
 
-class A : public IPoolObject<A>,
-          public ComponentBase,
-          public IUpdateComponent,
-          public IMessageComponent,
-          public IResetable<int> {
+class A : public IPoolObject<A, int>, public ComponentBase, public IUpdateComponent, public IMessageComponent {
  public:
   void Reset(int i) override { std::cout << i << std::endl; }
-  void BackToPool() override { ObjectPool<A>::GetInstance()->FreeOne(this); }
   void Update() override {
     if (!isupdate) {
       std::cout << "update" << std::endl;

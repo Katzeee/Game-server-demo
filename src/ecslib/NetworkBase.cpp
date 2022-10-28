@@ -119,4 +119,13 @@ void NetworkBase::SetNonBlock(int socket) {
 
 NetworkBase::~NetworkBase() { connects_.clear(); }
 
+auto NetworkBase::CreateSocket() -> bool {
+  master_socket_fd_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+  if (master_socket_fd_ <= 0) {
+    std::cout << "socket fail: " << errno << std::endl;
+    return false;
+  }
+  return true;
+}
+
 }  // end namespace xac

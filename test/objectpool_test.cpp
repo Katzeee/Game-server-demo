@@ -3,10 +3,10 @@
 
 using namespace xac;
 
-class A : public IPoolObject<A>, public IResetable<int> {
+class A : public IPoolObject<A, int> {
  public:
   void Reset(int i) override { std::cout << i << std::endl; }
-  void BackToPool() override { ObjectPool<A>::GetInstance()->FreeOne(this); }
+  void Dispose() override { std::cout << "dispose" << std::endl; }
 };
 
 int main() {

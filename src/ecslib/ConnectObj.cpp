@@ -83,7 +83,7 @@ void ConnectObj::Reset(int socket_fd) {
   write_buffer_ = std::make_unique<SendBuffer>();
 }
 
-void ConnectObj::BackToPool() {
+void ConnectObj::Dispose() {
   socket_fd_ = -1;
   read_buffer_ = nullptr;
   write_buffer_ = nullptr;
