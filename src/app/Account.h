@@ -1,12 +1,17 @@
 #pragma once
-#include "../libserver.h"
+#include "../ecslibserver.h"
 
 namespace xac {
     
-class Account : public ThreadObj {
+class Account : public IMessageComponent {
 public:
-    void Init() override;
-    void Update() override;
+    void RegistCBFuncs() {
+        auto message_list = new MessageList();
+        message_list->RegistCBFunc(
+    }
+
+private:
+
 };
 
 } // end namespace xac

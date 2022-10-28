@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include "BufferBase.h"
-#include "protobuf/proto.h"
+#include "../protobuf/proto.h"
 
 namespace xac {
 

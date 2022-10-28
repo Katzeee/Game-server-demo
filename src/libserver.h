@@ -7,5 +7,5 @@
 #include "lib/NetworkConnecter.h"
 #include "lib/MessageHandler.h"
 #include "lib/MessageList.h"
-#include "lib/protobuf/proto.h"
 #include "lib/StateMachineBase.h"
+#include "protobuf/proto.h"

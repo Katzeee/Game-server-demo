@@ -2,7 +2,7 @@
 #include "IComponent.h"
 #include "IPoolObject.h"
 #include "NetworkBase.h"
-#include "protobuf/proto.h"
+#include "../protobuf/proto.h"
 
 namespace xac {
 

@@ -3,8 +3,7 @@
 #include <memory.h>
 #include "ConnectObj.h"
 #include "Packet.h"
-#include "protobuf/msg.pb.h"
-#include "protobuf/proto_msg_id.pb.h"
+#include "../protobuf/proto.h"
 
 namespace xac {
 

@@ -6,7 +6,7 @@
 #include <memory>
 #include <mutex>
 #include "Packet.h"
-#include "protobuf/proto.h"
+#include "../protobuf/proto.h"
 namespace xac {
 
 class MessageListBase {

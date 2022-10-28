@@ -22,7 +22,7 @@ set(link_libs ${CURL_LIBRARIES} ${PROTOBUF_LIBRARIES} jsoncpp)
 # source files 
 
 aux_source_directory(src/lib LIB_SRC)
-file(GLOB proto_files CONFIG_DEPENDS src/lib/protobuf/*.proto)
+file(GLOB proto_files CONFIG_DEPENDS src/protobuf/*.proto)
 PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS ${proto_files})
 
 aux_source_directory(src/ecslib LIB_ECS_SRC)

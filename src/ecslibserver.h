@@ -3,7 +3,7 @@
 #include "ecslib/EntitySystem.h"
 #include "ecslib/IPoolObject.h"
 #include "ecslib/MessageList.h"
-#include "ecslib/protobuf/proto.h"
+#include "protobuf/proto.h"
 #include "ecslib/Thread.h"
 #include "ecslib/ThreadManager.h"
 #include "ecslib/NetworkListener.h"
