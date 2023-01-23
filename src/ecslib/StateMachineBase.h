@@ -6,6 +6,7 @@
 namespace xac {
 
 // states change because of class T changed, so we must add T as a template varible to get the real states of class T
+// We want know something about other states, or manager
 template <typename StatesEnum, typename T>
 class StateBase {
  public:
@@ -24,12 +25,13 @@ class StateMachineBase {
  public:
   using StateCreateFunc = std::function<StateBase<StatesEnum, T> *(void)>;
   explicit StateMachineBase(StatesEnum default_state) : default_state_(default_state) {}
+  virtual ~StateMachineBase() = default;
   void ChangeState(StatesEnum state) {
     auto creator = state_creator_[state];
     if (state_obj_) {
       state_obj_->OnExit();
     }
-    auto origin_obj = static_cast<T *>(this);
+    auto origin_obj = dynamic_cast<T *>(this);
     assert(origin_obj);
     state_obj_ = std::unique_ptr<StateBase<StatesEnum, T>>();
     state_obj_.reset(creator());
