@@ -20,7 +20,7 @@ class IPoolObject {
     Dispose();
     obj_pool_->FreeOne(dynamic_cast<T *>(this));
   }
-  virtual void Reset(Args... args) = 0;
+  virtual void Reset(Args... args) = 0; // must be call when awake from pool
 
  protected:
   ObjectPool<T> *obj_pool_ = nullptr;
